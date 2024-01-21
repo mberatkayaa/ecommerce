@@ -1,0 +1,20 @@
+.b-menu-item-container:not(.b-no-apply) {
+  @apply text-lg m-0 p-0 font-semibold border-0 border-b-4 border-transparent hover:border-b-secondary;
+}
+
+.b-menu-link:not(.b-no-apply) {
+  @apply w-full h-full flex rounded-none;
+}
+
+.b-menu-toggler:not(.b-no-apply) {
+  @apply b-menu-link menu-dropdown-toggle;
+}
+
+.b-menu-dropdown:not(.b-no-apply) {
+  @apply menu-dropdown absolute bg-success text-success-content left-0 top-[5rem] min-w-[200px] w-fit p-0 m-0 font-normal;
+}
+
+.b-menu-sub-item:not(.b-no-apply) {
+  transition: padding-left 150ms cubic-bezier(0.4, 0, 0.2, 1), border-left 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  @apply border-0 border-l-4 border-transparent hover:pl-6 hover:border-l-secondary rounded-none text-nowrap;
+}

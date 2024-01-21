@@ -1,0 +1,53 @@
+<nav class="navbar bg-primary text-primary-content p-0 items-stretch h-[5rem] relative">
+  <div class="grid grid-cols-12 w-full items-stretch">
+    <ul class="col-start-3 col-end-11 menu menu-horizontal gap-x-2 p-0 justify-between">
+      <li class="b-menu-item-container">
+        <a routerLink="/qwe" class="b-menu-link">Tümü</a>
+      </li>
+      <li
+        class="b-menu-item-container"
+        appDropdownToggler
+        togglerShowClassName="menu-dropdown-show"
+        dropdownShowClassName="menu-dropdown-show">
+        <a class="b-menu-toggler" [attr.data-toggler]="'true'">Mouse Pad</a>
+        <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'">
+          <li><a class="b-menu-sub-item">Beam S Serisi</a></li>
+          <li><a class="b-menu-sub-item">Beam XL Serisi</a></li>
+          <li><a class="b-menu-sub-item">Wild Serisi</a></li>
+          <li><a class="b-menu-sub-item">Beam Soft Serisi</a></li>
+        </ul>
+      </li>
+      <li class="b-menu-item-container">
+        <a routerLink="/qwe" class="b-menu-link">Kupa Bardak</a>
+      </li>
+      <li
+        class="b-menu-item-container"
+        appDropdownToggler
+        togglerShowClassName="menu-dropdown-show"
+        dropdownShowClassName="menu-dropdown-show">
+        <a class="b-menu-toggler" [attr.data-toggler]="'true'">Patch & Yama</a>
+        <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'">
+          <li><a class="b-menu-sub-item">Patch</a></li>
+          <li><a class="b-menu-sub-item">Back Patch</a></li>
+        </ul>
+      </li>
+      <li
+        class="b-menu-item-container"
+        appDropdownToggler
+        togglerShowClassName="menu-dropdown-show"
+        dropdownShowClassName="menu-dropdown-show">
+        <a class="b-menu-toggler" [attr.data-toggler]="'true'">Gamer Yastık</a>
+        <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'">
+          <li><a class="b-menu-sub-item">Suni Deri</a></li>
+          <li><a class="b-menu-sub-item">Baskılı</a></li>
+        </ul>
+      </li>
+      <li class="b-menu-item-container">
+        <a routerLink="/qwe" class="b-menu-link">Kulaklık Standı</a>
+      </li>
+      <li class="b-menu-item-container">
+        <a routerLink="/qwe" class="b-menu-link">Ahşat Poster</a>
+      </li>
+    </ul>
+  </div>
+</nav>
