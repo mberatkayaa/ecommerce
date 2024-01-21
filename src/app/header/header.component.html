@@ -1,0 +1,36 @@
+<header class="grid grid-cols-12 my-12">
+  <div class="col-start-3 col-span-2">
+    <a routerLink="/" class="btn btn-ghost text-primary m-0 h-auto text-3xl font-bold rounded-none"><fa-icon [icon]="iconsService.store"/>  TakeStore</a>
+  </div>
+  <div class="col-span-4 flex">
+    <input
+      type="text"
+      placeholder="Arama"
+      class="input focus:outline-0 focus:border-primary border-base-200 rounded-none flex-1" />
+    <button class="btn btn-primary rounded-none px-8">Ara</button>
+  </div>
+  <div class="col-span-2 flex gap-x-3">
+    <div class="flex group gap-x-2 ml-auto">
+      <fa-icon
+        class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
+        [icon]="iconsService.user" />
+      <div class="text-base-content group-hover:text-primary flex flex-col">
+        <a routerLink="/qwe" class="font-semibold opacity-75 hover:opacity-100 text-sm">ÜYE GİRİŞİ</a>
+        <a routerLink="/qwe" class="mt-auto mb-2 font-normal opacity-75 hover:opacity-100 text-xs">Üye ol</a>
+      </div>
+    </div>
+    <a routerLink="/qwe" class="flex group gap-x-2">
+      <fa-icon
+        class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
+        [icon]="iconsService.cartShopping" />
+      <div class="text-base-content group-hover:text-primary flex flex-col">
+        <span
+          routerLink="/qwe"
+          class="font-semibold opacity-75 group-hover:opacity-100 text-sm truncate min-w-0 flex-1">
+          SEPETİM
+        </span>
+        <span routerLink="/qwe" class="mt-auto mb-2 font-normal opacity-75 group-hover:opacity-100 text-xs">₺100</span>
+      </div>
+    </a>
+  </div>
+</header>
