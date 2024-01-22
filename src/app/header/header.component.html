@@ -20,9 +20,12 @@
       </div>
     </div>
     <a routerLink="/qwe" class="flex group gap-x-2">
-      <fa-icon
+      <div class="indicator">
+        <span class="indicator-item badge badge-primary w-6 h-6 text-xs right-2">9</span>
+        <fa-icon
         class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
         [icon]="iconsService.cartShopping" />
+      </div>
       <div class="text-base-content group-hover:text-primary flex flex-col">
         <span
           routerLink="/qwe"
