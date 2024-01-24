@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { CarouselComponent, OwlOptions } from "ngx-owl-carousel-o";
+import { Product } from "../../shared/models/Product.model";
 
 @Component({
   selector: "app-home-page",
@@ -7,13 +8,6 @@ import { CarouselComponent, OwlOptions } from "ngx-owl-carousel-o";
   styleUrl: "./home-page.component.css",
 })
 export class HomePageComponent {
-  @ViewChild("carousel") carousel: CarouselComponent;
-  @HostListener("window:resize", ["$event"])
-  resizeHandler() {
-    this.customOptions = { ...this.customOptions };
-    this.carousel.ngOnInit();
-  }
-
   customOptions: OwlOptions = {
     loop: true,
     center: true,
@@ -27,4 +21,15 @@ export class HomePageComponent {
     autoWidth: true,
     responsive: {},
   };
+  prods = [
+    Product.default().set("stock", 0),
+    Product.default(),
+    Product.default().set("stock", 0),
+    Product.default(),
+    Product.default().set("stock", 0),
+    Product.default(),
+    Product.default(),
+    Product.default(),
+    Product.default(),
+  ];
 }

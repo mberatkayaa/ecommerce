@@ -1,0 +1,24 @@
+<div class="grid grid-cols-12">
+  <div class="col-start-3 col-end-11">
+    <owl-carousel-o class="main-carousel" [options]="customOptions" *appCarouselFixer>
+      <ng-template carouselSlide [id]="'main-carousel__slide-1'">
+        <img class="w-full" src="../../../assets/wild-serisi-oyuncu-mouse-pad-acf8(1).jpg" />
+      </ng-template>
+      <ng-template carouselSlide [id]="'main-carousel__slide-2'">
+        <img class="w-full" src="../../../assets/oyunculara-ozel-mouse-padler-c2ff.jpg" />
+      </ng-template>
+      <ng-template carouselSlide [id]="'main-carousel__slide-3'">
+        <img class="w-full" src="../../../assets/patch--yama-2605.jpg" />
+      </ng-template>
+    </owl-carousel-o>
+  </div>
+
+  <h1 class="col-start-3 col-end-11 text-2xl text-center font-bold">Öne Çıkanlar</h1>
+  
+  <app-product-carousel class="main-carousel col-start-3 col-end-11" [products]="prods" [itemCount]="5"/>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>

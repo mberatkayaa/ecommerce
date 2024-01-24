@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-carousel .owl-dots{
+  background: #00000080;
+  position: absolute;
+  margin: auto;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 7px;
+}
+
+app-root{
+  /* display: block;
+  width: 80vw;
+  height: 100vh;
+  overflow: visible; */
+}

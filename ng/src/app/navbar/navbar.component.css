@@ -11,7 +11,7 @@
 }
 
 .b-menu-dropdown:not(.b-no-apply) {
-  @apply menu-dropdown absolute bg-success text-success-content left-0 top-[5rem] min-w-[200px] w-fit p-0 m-0 font-normal;
+  @apply menu-dropdown absolute bg-success text-success-content left-0 top-[5rem] min-w-[200px] w-fit p-0 m-0 font-normal z-10;
 }
 
 .b-menu-sub-item:not(.b-no-apply) {

@@ -1,0 +1,25 @@
+<a routerLink="/prod" class="flex flex-col gap-2 group shadow hover:shadow-primary p-2 rounded">
+  <button
+    class="ml-auto"
+    [ngClass]="{
+      'text-gray-400 hover:text-rose-600': !product.fav,
+      'text-rose-600 hover:text-gray-400': product.fav
+    }"
+    (click)="addToFavoriteHandler($event)">
+    <fa-icon [icon]="iconsService.heart" />
+  </button>
+  <img [ngClass]="{ 'opacity-50': product.stock <= 0 }" [src]="product.mainImg" [alt]="product.title" />
+  <button
+    *ngIf="product.stock > 0"
+    class="btn btn-primary btn-sm btn-outline rounded-none opacity-0 group-hover:opacity-100 mx-[-0.5rem]"
+    (click)="addToCartHandler($event)">
+    SEPETE EKLE
+  </button>
+  <span
+    *ngIf="product.stock <= 0"
+    class="bg-rose-700 text-white/85 mx-[-0.5rem] font-bold h-8 flex justify-center items-center">
+    TÜKENDİ
+  </span>
+  <span class="text-center font-semibold text-sm line-clamp-3" [title]="product.title">{{ product.title }}</span>
+  <span class="text-center font-extrabold">₺{{ product.price }}</span>
+</a>
