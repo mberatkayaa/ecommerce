@@ -1,0 +1,42 @@
+<form
+  class="flex flex-col gap-6 w-96 mx-auto shadow-lg border rounded px-8 py-4 mt-12"
+  [ngClass]="{ 'shadow-primary': authForm.valid, 'shadow-error': authForm.invalid }"
+  [formGroup]="authForm"
+  (ngSubmit)="submitHandler()">
+  <h1 class="text-2xl">{{ mode === "signin" ? "Giriş Yap" : "Üye Ol" }}</h1>
+  <div class="flex flex-col gap-2">
+    <label for="email">Email</label>
+    <div class="relative">
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="input input-bordered input-sm w-full"
+        [ngClass]="{ 'input-primary': !showError('email'), 'input-error pr-7': showError('email') }" />
+      <fa-icon
+        *ngIf="showError('email')"
+        class="text-error absolute right-2 top-1/2 transform -translate-y-1/2"
+        [icon]="iconsService.xMark"></fa-icon>
+    </div>
+    <span *ngIf="showError('email')">Lütfen geçerli bir email giriniz!</span>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for="password">Parola</label>
+    <div class="relative">
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="input input-bordered input-sm w-full"
+        [ngClass]="{ 'input-primary': !showError('password'), 'input-error': showError('password') }" />
+      <fa-icon
+        *ngIf="showError('password')"
+        class="text-error absolute right-2 top-1/2 transform -translate-y-1/2"
+        [icon]="iconsService.xMark"></fa-icon>
+    </div>
+    <span *ngIf="showError('password')">Parola en az 8 karakterden oluşmalıdır!</span>
+  </div>
+  <button class="btn btn-primary" type="submit" [disabled]="this.authForm.invalid">
+    {{ mode === "signin" ? "Giriş Yap" : "Üye Ol" }}
+  </button>
+</form>
