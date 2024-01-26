@@ -1,10 +1,19 @@
 import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import { userModel } from "../models/User.js";
 import { wrapper } from "../util/requestHandlerWrapper.js";
 import { ResultBuilder } from "../util/ResultBuilder.js";
 
 export const authRouter = express.Router();
+
+function getToken(email: string, _id: string) {
+  const token = jwt.sign({ email, _id }, process.env.AUTH_SECRET!, {
+    expiresIn: "30 days",
+  });
+  return token;
+}
 
 authRouter.post("/signup", (req, res) => {
   wrapper(async () => {
@@ -18,32 +27,22 @@ authRouter.post("/signup", (req, res) => {
             .body({ email: req.body.email }).result
         );
     }
-    const createResult = await userModel.create({ email: req.body.email, password: req.body.password });
-    return res.status(200).json(new ResultBuilder().ok().result);
-    userModel
-      .findOne({
-        email: req.body.email,
-      })
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    res.status(200).send();
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const createResult = await userModel.create({ email: req.body.email, password: hash });
+    
+    const token = getToken(createResult.email, createResult._id.toString());
+    return res.status(200).json(new ResultBuilder().ok().body({ token }).result);
   }, res);
 });
 
 authRouter.post("/signin", (req, res) => {
-  userModel
-    .findOne({
-      email: req.body.email,
-    })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  res.status(200).send();
+  wrapper(async () => {
+    const result = await userModel.findOne({ email: req.body.email });
+    if (!result || !(await bcrypt.compare(req.body.password, result.password))) {
+      return res.status(404).json(new ResultBuilder().error("Kullanıcı adı veya parola hatalı!").result);
+    }
+
+    const token = getToken(result.email, result._id.toString());
+    return res.status(200).json(new ResultBuilder().ok().body({ token }).result);
+  }, res);
 });

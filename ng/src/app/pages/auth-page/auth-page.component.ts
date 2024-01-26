@@ -1,9 +1,12 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { domain } from "../../shared/misc/constants";
 import { IconsService } from "../../shared/services/icons.service";
+import { SwalComponent } from "@sweetalert2/ngx-sweetalert2";
+import Swal from "sweetalert2";
+import { AuthService } from "../../shared/services/auth.service";
 
 @Component({
   selector: "app-auth-page",
@@ -14,7 +17,16 @@ export class AuthPageComponent implements OnInit {
   mode: "signin" | "signup" = "signin";
   authForm: FormGroup;
 
-  constructor(protected iconsService:IconsService, private route: ActivatedRoute, private http: HttpClient) {}
+  @ViewChild("loadingSwal", { static: true }) loadingSwal: SwalComponent;
+  @ViewChild("errorSwal", { static: true }) errorSwal: SwalComponent;
+  @ViewChild("successSwal", { static: true }) successSwal: SwalComponent;
+
+  constructor(
+    protected iconsService: IconsService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
@@ -32,10 +44,31 @@ export class AuthPageComponent implements OnInit {
     return control.invalid && control.touched;
   }
 
-  submitHandler() {
+  async submitHandler() {
     if (this.authForm.valid) {
-      const url = domain + this.mode;
-      this.http.post(url, this.authForm.value).subscribe((data) => console.log(data));
+      this.loadingSwal.fire();
+
+      this.authService.auth(this.authForm.value["email"], this.authForm.value["password"], this.mode).subscribe({
+        next: (async (data) => {
+          console.log(data);
+          await this.loadingSwal.close();
+          await this.successSwal.fire();
+        }).bind(this),
+        error: (async (err) => {
+          console.log(err);
+          await this.loadingSwal.close();
+          this.errorSwal.text = err;
+          await this.errorSwal.fire();
+        }).bind(this),
+      });
     }
+  }
+
+  swalDidOpenHandler() {
+    Swal.showLoading();
+  }
+
+  successDidCloseHandler() {
+    this.router.navigate(["/"]);
   }
 }

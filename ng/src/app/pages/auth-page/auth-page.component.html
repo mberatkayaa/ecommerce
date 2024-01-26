@@ -40,3 +40,14 @@
     {{ mode === "signin" ? "Giriş Yap" : "Üye Ol" }}
   </button>
 </form>
+<swal
+  #loadingSwal
+  [title]="mode === 'signin' ? 'Giriş Yapılıyor' : 'Üye Olunuyor'"
+  text="Lütfen bekleyiniz."
+  [allowEnterKey]="false"
+  [allowEscapeKey]="false"
+  [allowOutsideClick]="false"
+  (didOpen)="swalDidOpenHandler()"
+  [showConfirmButton]="false"></swal>
+<swal #errorSwal title="Hata!" icon="error" text=""/>
+<swal #successSwal title="Başarılı" icon="success" [timer]="1500" [timerProgressBar]="true" (didDestroy)="successDidCloseHandler()"/>
