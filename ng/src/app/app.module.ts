@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 // 3rd party
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { CarouselModule } from "ngx-owl-carousel-o";
@@ -22,6 +22,13 @@ import { CarouselFixerDirective } from "./shared/directives/carousel-fixer.direc
 import { CarouselFixer2Directive } from "./shared/directives/carousel-fixer2.directive";
 // Services
 import { IconsService } from "./shared/services/icons.service";
+import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
+import { AuthInterceptorService } from "./shared/services/auth-interceptor.service";
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { ProductsComponent } from './shared/components/products/products.component';
+import { AdminProductCardComponent } from './shared/components/admin/admin-product-card/admin-product-card.component';
+import { AdminProductsPageComponent } from './pages/admin-page/admin-products-page/admin-products-page.component';
+import { AdminAddProductPageComponent } from './pages/admin-page/admin-add-product-page/admin-add-product-page.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +42,11 @@ import { IconsService } from "./shared/services/icons.service";
     CarouselFixer2Directive,
     ProductCarouselComponent,
     AuthPageComponent,
+    AdminPageComponent,
+    ProductsComponent,
+    AdminProductCardComponent,
+    AdminProductsPageComponent,
+    AdminAddProductPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,8 +56,16 @@ import { IconsService } from "./shared/services/icons.service";
     CarouselModule,
     ReactiveFormsModule,
     HttpClientModule,
+    SweetAlert2Module.forRoot(),
   ],
-  providers: [IconsService],
+  providers: [
+    IconsService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
