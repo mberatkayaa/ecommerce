@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.main-carousel .owl-dots{
+.main-carousel .owl-dots {
   background: #00000080;
   position: absolute;
   margin: auto;
@@ -16,9 +16,33 @@
   border-radius: 7px;
 }
 
-app-root{
+app-root {
   /* display: block;
   width: 80vw;
   height: 100vh;
   overflow: visible; */
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-secondary rounded-sm;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accent/75 rounded-sm;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent;
+}
+
+.children-h-100 > * {
+  @apply h-full;
+}
+
+router-outlet {
+  height: 0 !important;
 }
