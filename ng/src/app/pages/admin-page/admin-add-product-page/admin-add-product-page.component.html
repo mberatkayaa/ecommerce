@@ -1,0 +1,81 @@
+<div class="grid grid-cols-2">
+  <form [formGroup]="productForm" (ngSubmit)="submitHandler()">
+    <h1>Ürün Formu</h1>
+    <div class="form-control">
+      <label for="title" class="label">Ürün Adı</label>
+      <input type="text" id="title" formControlName="title" class="input input-bordered input-sm w-full" />
+    </div>
+
+    <div class="form-control">
+      <label for="description" class="label">Açıklama</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        class="textarea textarea-bordered textarea-sm w-full"></textarea>
+    </div>
+
+    <div class="form-control">
+      <label for="stock" class="label">Stok</label>
+      <input type="number" id="stock" formControlName="stock" class="textarea textarea-bordered textarea-sm w-full" />
+    </div>
+
+    <div class="form-control">
+      <label for="price" class="label">Fiyat</label>
+      <input type="number" id="price" formControlName="price" class="textarea textarea-bordered textarea-sm w-full" />
+    </div>
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+  </form>
+  <div class="grid grid-cols-2 content-start">
+    <div class="col-span-full">
+      <label
+        for="mainImg"
+        class="label bg-primary/80 hover:bg-primary text-primary-content inline-flex flex-col p-3 rounded-lg cursor-pointer"
+        [ngClass]="{ hidden: mainImgURL, 'inline-flex': !mainImgURL }">
+        <span class="text-base">Ana Resim</span>
+        <fa-icon class="text-4xl" [icon]="iconsService.image"></fa-icon>
+      </label>
+      <input
+        type="file"
+        accept="image/*"
+        id="mainImg"
+        (change)="mainImgSelectedHandler($event.target.files)"
+        class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
+      <div class="card bg-base-100 shadow-xl" *ngIf="mainImgURL">
+        <figure class="!justify-between px-3">
+          <span>Ana Resim: {{ mainImgFile.name }}</span>
+          <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler('mainImg')">
+            <fa-icon [icon]="iconsService.xMark" />
+          </button>
+        </figure>
+        <figure><img [src]="mainImgURL" alt="Ana resim" class="object-contain max-h-60 mb-3" /></figure>
+      </div>
+    </div>
+
+    <h1 class="col-span-full">Yan Resimler</h1>
+    <div class="col-span-full">
+      <label
+        for="images"
+        class="label bg-primary/80 hover:bg-primary text-primary-content inline-flex flex-col p-3 rounded-lg cursor-pointer"
+        [ngClass]="{ hidden: mainImgURL, 'inline-flex': !mainImgURL }">
+        <span class="text-base">Ekle</span>
+        <fa-icon class="text-4xl" [icon]="iconsService.image"></fa-icon>
+      </label>
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        id="images"
+        (change)="imagesSelectedHandler($event.target)"
+        class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
+    </div>
+    <div class="card bg-base-100 shadow-xl" *ngFor="let image of images; let i = index">
+      <figure class="!justify-between px-3">
+        <span>{{ image.file.name }}</span>
+        <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler(i)">
+          <fa-icon [icon]="iconsService.xMark" />
+        </button>
+      </figure>
+      <figure><img [src]="image.url" [alt]="image.file.name" class="object-contain max-h-60 mb-3" /></figure>
+    </div>
+  </div>
+</div>

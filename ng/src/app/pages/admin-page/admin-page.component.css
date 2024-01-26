@@ -1,0 +1,7 @@
+.admin-link {
+  @apply border border-x-0 flex items-start gap-2 text-3xl px-4 py-2 transition-all hover:border-l-8 hover:border-secondary;
+}
+
+.admin-link.b-active {
+  @apply border-l-8 border-secondary;
+}

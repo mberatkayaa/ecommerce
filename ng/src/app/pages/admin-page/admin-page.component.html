@@ -1,0 +1,29 @@
+<div class="grid grid-cols-12 h-screen w-screen min-h-0 min-w-0 overflow-hidden grid-rows-1">
+  <aside class="col-span-3 bg-primary text-primary-content flex flex-col gap-4">
+    <a routerLink="/admin" class="text-5xl px-4 my-3">Dashboard</a>
+    <a routerLink="products" routerLinkActive="b-active" class="admin-link">
+      <fa-icon [icon]="iconsService.barcode" />
+      Ürünler
+    </a>
+    <a routerLink="categories" routerLinkActive="b-active" class="admin-link">
+      <fa-icon [icon]="iconsService.layerGroup" />
+      Kategoriler
+    </a>
+  </aside>
+  <!-- <main class="col-start-4 col-end-[-1] border border-red-700 flex flex-col">
+    <div class="text-5xl px-4 my-3 flex gap-8">
+      <h1>Ürünler</h1>
+      <button
+        class="bg-primary text-primary-content hover:bg-primary/80 rounded-full h-12 w-12 text-3xl flex items-center justify-center"
+        title="Ürün ekle">
+        <fa-icon [icon]="iconsService.add" />
+      </button>
+    </div>
+    <div class="overflow-auto border border-cyan-600">
+      <router-outlet></router-outlet>
+    </div>
+  </main> -->
+  <main class="col-start-4 col-end-[-1] border border-red-700 flex flex-col children-h-100">
+    <router-outlet></router-outlet>
+  </main>
+</div>
