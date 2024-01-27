@@ -1,4 +1,6 @@
-export class Product {
+import { Category } from "./Category.model";
+
+export interface Product {
   _id: string;
   title: string;
   description: string;
@@ -8,22 +10,5 @@ export class Product {
   fav: boolean;
   mainImg: string;
   images: Array<string>;
-
-  static default(): Product {
-    const prod = new Product();
-    prod._id = Math.random().toString();
-    prod.title = Math.random().toString();
-    prod.description = "Beam xl mouse pad";
-    prod.stock = 10;
-    prod.price = 10;
-    prod.unit = "Adet";
-    prod.fav = false;
-    prod.mainImg = "https://picsum.photos/200/300";
-    return prod;
-  }
-
-  set(propName: string, value): Product {
-    this[propName] = value;
-    return this;
-  }
+  categories?: Array<Category>;
 }

@@ -4,7 +4,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 // 3rd party
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -24,11 +24,13 @@ import { CarouselFixer2Directive } from "./shared/directives/carousel-fixer2.dir
 import { IconsService } from "./shared/services/icons.service";
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 import { AuthInterceptorService } from "./shared/services/auth-interceptor.service";
-import { AdminPageComponent } from './pages/admin-page/admin-page.component';
-import { ProductsComponent } from './shared/components/products/products.component';
-import { AdminProductCardComponent } from './shared/components/admin/admin-product-card/admin-product-card.component';
-import { AdminProductsPageComponent } from './pages/admin-page/admin-products-page/admin-products-page.component';
-import { AdminAddProductPageComponent } from './pages/admin-page/admin-add-product-page/admin-add-product-page.component';
+import { AdminPageComponent } from "./pages/admin-page/admin-page.component";
+import { ProductsComponent } from "./shared/components/products/products.component";
+import { AdminProductCardComponent } from "./shared/components/admin/admin-product-card/admin-product-card.component";
+import { AdminProductsPageComponent } from "./pages/admin-page/admin-products-page/admin-products-page.component";
+import { AdminAddProductPageComponent } from "./pages/admin-page/admin-add-product-page/admin-add-product-page.component";
+import { AdminCategoriesPageComponent } from "./pages/admin-page/admin-categories-page/admin-categories-page.component";
+import { CategoryRowComponent } from "./pages/admin-page/admin-categories-page/category-row.component";
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { AdminAddProductPageComponent } from './pages/admin-page/admin-add-produ
     AdminProductCardComponent,
     AdminProductsPageComponent,
     AdminAddProductPageComponent,
+    AdminCategoriesPageComponent,
+    CategoryRowComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,7 @@ import { AdminAddProductPageComponent } from './pages/admin-page/admin-add-produ
     ReactiveFormsModule,
     HttpClientModule,
     SweetAlert2Module.forRoot(),
+    FormsModule,
   ],
   providers: [
     IconsService,

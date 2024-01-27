@@ -1,6 +1,9 @@
-<div class="grid grid-cols-2">
-  <form [formGroup]="productForm" (ngSubmit)="submitHandler()">
-    <h1>Ürün Formu</h1>
+<div class="h-full grid grid-cols-3 grid-rows-1">
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="submitHandler()"
+    class="flex flex-col gap-3 overflow-auto max-h-full self-start p-3 shadow-md rounded m-3">
+    <h1 class="text-2xl font-bold">Ürün Formu</h1>
     <div class="form-control">
       <label for="title" class="label">Ürün Adı</label>
       <input type="text" id="title" formControlName="title" class="input input-bordered input-sm w-full" />
@@ -15,24 +18,110 @@
     </div>
 
     <div class="form-control">
+      <label for="unit" class="label">Birim</label>
+      <input type="text" id="unit" formControlName="unit" class="input input-bordered input-sm w-full" />
+    </div>
+
+    <div class="form-control">
       <label for="stock" class="label">Stok</label>
-      <input type="number" id="stock" formControlName="stock" class="textarea textarea-bordered textarea-sm w-full" />
+      <input type="number" id="stock" formControlName="stock" class="input input-bordered input-sm w-full" />
     </div>
 
     <div class="form-control">
       <label for="price" class="label">Fiyat</label>
-      <input type="number" id="price" formControlName="price" class="textarea textarea-bordered textarea-sm w-full" />
+      <input type="number" id="price" formControlName="price" class="input input-bordered input-sm w-full" />
     </div>
     <button type="submit" class="btn btn-primary">Oluştur</button>
   </form>
-  <div class="grid grid-cols-2 content-start">
+
+  <div class="col-span-2 grid content-start mr-3">
+    <div class="collapse shadow-md m-3 rounded">
+      <input type="radio" name="accordion" checked="checked" />
+      <div class="collapse-title text-xl font-medium">Resimler</div>
+      <div class="collapse-content">
+        <div class="grid grid-cols-2 content-start p-2 gap-3 overflow-auto max-h-full self-start">
+          <div class="col-span-full">
+            <label
+              for="mainImg"
+              class="label bg-primary/80 hover:bg-primary text-primary-content justify-center gap-3 rounded-lg cursor-pointer"
+              [ngClass]="{ hidden: mainImgURL, flex: !mainImgURL }">
+              <span class="text-xl">Ana Resim</span>
+              <fa-icon class="text-2xl" [icon]="iconsService.image"></fa-icon>
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              id="mainImg"
+              (change)="mainImgSelectedHandler($event.target.files)"
+              class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
+            <div class="card bg-base-100 shadow-xl" *ngIf="mainImgURL">
+              <figure class="!justify-between px-3">
+                <span class="truncate text-sm">Ana Resim: {{ mainImgFile.name }}</span>
+                <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler('mainImg')">
+                  <fa-icon [icon]="iconsService.xMark" />
+                </button>
+              </figure>
+              <figure><img [src]="mainImgURL" alt="Ana resim" class="object-contain h-[14vh] mb-3" /></figure>
+            </div>
+          </div>
+
+          <h1 class="col-span-full">Yan Resimler</h1>
+          <div class="col-span-full">
+            <label
+              for="images"
+              class="label bg-primary/80 hover:bg-primary text-primary-content flex justify-center gap-3 rounded-lg cursor-pointer">
+              <span class="text-xl">Ekle</span>
+              <fa-icon class="text-2xl" [icon]="iconsService.image"></fa-icon>
+            </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              id="images"
+              (change)="imagesSelectedHandler($event.target)"
+              class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
+          </div>
+          <div class="col-span-full grid grid-cols-2 overflow-auto gap-3">
+            <div class="card bg-base-100 shadow-xl" *ngFor="let image of images; let i = index">
+              <figure class="!justify-between px-3">
+                <span class="truncate text-sm">{{ image.file.name }}</span>
+                <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler(i)">
+                  <fa-icon [icon]="iconsService.xMark" />
+                </button>
+              </figure>
+              <figure><img [src]="image.url" [alt]="image.file.name" class="object-contain h-[14vh] mb-3" /></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse shadow-md m-3 rounded">
+      <input type="radio" name="accordion" />
+      <div class="collapse-title text-xl font-medium">Kategoriler</div>
+      <div class="collapse-content">
+        <div class="grid content-start p-2 gap-3 overflow-auto max-h-full self-start">
+          <div class="flex flex-wrap content-start gap-4">
+            <!-- <div class="w-full flex gap-3 "> DTT_000
+              <input type="text" class="input input-bordered input-primary input-sm flex-1 rounded-sm" placeholder="Ara"/>
+              <button class="btn btn-primary btn-sm rounded-sm">Seçimi temizle</button>
+            </div> -->
+            <label class="label cursor-pointer inline-flex items-center" *ngFor="let cat of categories">
+              <input type="checkbox" (change)="checkedChangedHandler(cat.category._id, $event.target.checked)" class="checkbox checkbox-sm mr-1 checkbox-primary" [checked]="cat.checked"/>
+              <span class="label-text">{{cat.category.title}}</span> 
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-span-2 grid grid-cols-2 content-start p-2 gap-3 overflow-auto shadow-md m-3 rounded max-h-full self-start">
     <div class="col-span-full">
       <label
         for="mainImg"
-        class="label bg-primary/80 hover:bg-primary text-primary-content inline-flex flex-col p-3 rounded-lg cursor-pointer"
-        [ngClass]="{ hidden: mainImgURL, 'inline-flex': !mainImgURL }">
-        <span class="text-base">Ana Resim</span>
-        <fa-icon class="text-4xl" [icon]="iconsService.image"></fa-icon>
+        class="label bg-primary/80 hover:bg-primary text-primary-content justify-center gap-3 rounded-lg cursor-pointer"
+        [ngClass]="{ hidden: mainImgURL, 'flex': !mainImgURL }">
+        <span class="text-xl">Ana Resim</span>
+        <fa-icon class="text-2xl" [icon]="iconsService.image"></fa-icon>
       </label>
       <input
         type="file"
@@ -42,12 +131,12 @@
         class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
       <div class="card bg-base-100 shadow-xl" *ngIf="mainImgURL">
         <figure class="!justify-between px-3">
-          <span>Ana Resim: {{ mainImgFile.name }}</span>
+          <span class="truncate text-sm">Ana Resim: {{ mainImgFile.name }}</span>
           <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler('mainImg')">
             <fa-icon [icon]="iconsService.xMark" />
           </button>
         </figure>
-        <figure><img [src]="mainImgURL" alt="Ana resim" class="object-contain max-h-60 mb-3" /></figure>
+        <figure><img [src]="mainImgURL" alt="Ana resim" class="object-contain h-[14vh] mb-3" /></figure>
       </div>
     </div>
 
@@ -55,10 +144,9 @@
     <div class="col-span-full">
       <label
         for="images"
-        class="label bg-primary/80 hover:bg-primary text-primary-content inline-flex flex-col p-3 rounded-lg cursor-pointer"
-        [ngClass]="{ hidden: mainImgURL, 'inline-flex': !mainImgURL }">
-        <span class="text-base">Ekle</span>
-        <fa-icon class="text-4xl" [icon]="iconsService.image"></fa-icon>
+        class="label bg-primary/80 hover:bg-primary text-primary-content flex justify-center gap-3 rounded-lg cursor-pointer">
+        <span class="text-xl">Ekle</span>
+        <fa-icon class="text-2xl" [icon]="iconsService.image"></fa-icon>
       </label>
       <input
         type="file"
@@ -68,14 +156,16 @@
         (change)="imagesSelectedHandler($event.target)"
         class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
     </div>
-    <div class="card bg-base-100 shadow-xl" *ngFor="let image of images; let i = index">
-      <figure class="!justify-between px-3">
-        <span>{{ image.file.name }}</span>
-        <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler(i)">
-          <fa-icon [icon]="iconsService.xMark" />
-        </button>
-      </figure>
-      <figure><img [src]="image.url" [alt]="image.file.name" class="object-contain max-h-60 mb-3" /></figure>
+    <div class="col-span-full grid grid-cols-2 overflow-auto gap-3">
+      <div class="card bg-base-100 shadow-xl" *ngFor="let image of images; let i = index">
+        <figure class="!justify-between px-3">
+          <span class="truncate text-sm">{{ image.file.name }}</span>
+          <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler(i)">
+            <fa-icon [icon]="iconsService.xMark" />
+          </button>
+        </figure>
+        <figure><img [src]="image.url" [alt]="image.file.name" class="object-contain h-[14vh] mb-3" /></figure>
+      </div>
     </div>
-  </div>
+  </div> -->
 </div>

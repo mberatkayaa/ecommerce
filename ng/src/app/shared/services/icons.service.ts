@@ -3,6 +3,7 @@ import {
   faBoxesStacked,
   faCar,
   faCartShopping,
+  faCircleCheck,
   faCircleXmark,
   faHeart,
   faImage,
@@ -29,4 +30,5 @@ export class IconsService {
   price = faMoneyBill;
   stock = faBoxesStacked;
   image = faImage;
+  check = faCircleCheck;
 }

@@ -21,15 +21,5 @@ export class HomePageComponent {
     autoWidth: true,
     responsive: {},
   };
-  prods = [
-    Product.default().set("stock", 0),
-    Product.default(),
-    Product.default().set("stock", 0),
-    Product.default(),
-    Product.default().set("stock", 0),
-    Product.default(),
-    Product.default(),
-    Product.default(),
-    Product.default(),
-  ];
+  prods = [];
 }

@@ -1,0 +1,50 @@
+<div class="h-full flex flex-col">
+  <div class="flex flex-col gap-3 px-4 py-3">
+    <div class="text-5xl flex gap-8">
+      <h1>Kategoriler</h1>
+    </div>
+    <hr />
+  </div>
+  <div class="overflow-auto border border-cyan-600">
+    <div class="overflow-x-auto">
+      <table class="table">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th></th>
+            <th>Grup</th>
+            <th>Kategori</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- row 1 -->
+          <tr>
+            <th>Ekle</th>
+            <td>
+              <select id="group" [(ngModel)]="enteredGroup" class="select select-bordered select-sm w-full">
+                <option value="mousePad" selected>Mouse Pad</option>
+                <option value="bardak">Kupa Bardak</option>
+                <option value="patch">Patch & Yama</option>
+                <option value="yastık">Gamer Yastık</option>
+                <option value="stand">Kulaklık Standı</option>
+                <option value="poster">Ahşap Poster</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" id="title" [(ngModel)]="enteredTitle" class="input input-bordered input-sm w-full" />
+            </td>
+            <td><button class="btn btn-primary btn-sm rounded-sm" (click)="createCategoryHandler()">Ekle</button></td>
+          </tr>
+          <tr *ngFor="let cat of categories; let i = index;" app-category-row [rowNumber]="i+1" [_id]="cat._id" [group]="cat.group" [title]="cat.title"></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="join ml-auto mt-auto px-4">
+    <button class="join-item btn btn-xs">1</button>
+    <button class="join-item btn btn-xs btn-active">2</button>
+    <button class="join-item btn btn-xs">3</button>
+    <button class="join-item btn btn-xs">4</button>
+  </div>
+</div>

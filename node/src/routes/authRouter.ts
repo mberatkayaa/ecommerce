@@ -1,19 +1,12 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
-import { userModel } from "../models/User.js";
+import userModel from "../models/User.js";
 import { wrapper } from "../util/requestHandlerWrapper.js";
 import { ResultBuilder } from "../util/ResultBuilder.js";
+import { getToken } from "../util/token.js";
 
 export const authRouter = express.Router();
-
-function getToken(email: string, _id: string) {
-  const token = jwt.sign({ email, _id }, process.env.AUTH_SECRET!, {
-    expiresIn: "30 days",
-  });
-  return token;
-}
 
 authRouter.post("/signup", (req, res) => {
   wrapper(async () => {
@@ -29,7 +22,7 @@ authRouter.post("/signup", (req, res) => {
     }
     const hash = await bcrypt.hash(req.body.password, 10);
     const createResult = await userModel.create({ email: req.body.email, password: hash });
-    
+
     const token = getToken(createResult.email, createResult._id.toString());
     return res.status(200).json(new ResultBuilder().ok().body({ token }).result);
   }, res);

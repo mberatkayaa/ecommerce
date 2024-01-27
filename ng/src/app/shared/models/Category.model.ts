@@ -1,9 +1,8 @@
-import { List } from "../misc/List";
+import { Product } from "./Product.model";
 
-export class Category extends List<Category> {
-  constructor();
-  constructor(public id?: string, public title?: string, public description?: string, ...categories: Array<Category>) {
-    super();
-    this.add(...categories);
-  }
+export interface Category {
+  _id: string,
+  title: string,
+  group: string,
+  products?:Array<Product>
 }
