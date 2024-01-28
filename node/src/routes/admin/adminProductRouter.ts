@@ -14,6 +14,7 @@ import { ResultBuilder } from "../../util/ResultBuilder.js";
 import { imageFolder } from "../../util/paths.js";
 import { productFileKeys as fileKeys, productImageHandler, renameImage } from "../../util/fileUpload.js";
 import { slugify } from "../../util/slugify.js";
+import { Extension } from "../../util/ExtendedRequest.js";
 
 export const adminProductRouter = express.Router();
 
@@ -78,16 +79,16 @@ adminProductRouter.post("/add", productImageHandler(), (req, res) => {
 
 adminProductRouter.patch("/edit/:_id", productImageHandler(), (req, res) => {
   wrapper(async () => {
-    const reqAny: any = req;
+    const extension: Extension = req.body.__ext;
     let mainImgUrl: string = "";
     let imageUrls: Array<string> = [];
     // mainImg var ise URL'i setle.
-    if (req.body.mainImg) mainImgUrl = req.body.mainImg.replace(reqAny.__host, "");
+    if (req.body.mainImg) mainImgUrl = req.body.mainImg.replace(extension.host, "");
     // images var ise diziye ekle.
     if (req.body.images) {
       req.body.images = JSON.parse(req.body.images);
       if (Array.isArray(req.body.images) && req.body.images.length > 0) {
-        imageUrls.push(...req.body.images.map((x: string) => x.replace(reqAny.__host, "")));
+        imageUrls.push(...req.body.images.map((x: string) => x.replace(extension.host, "")));
       }
     }
     //#region Dosya işlemleri

@@ -9,19 +9,20 @@ import { adminCategoryRouter } from "./admin/adminCategoryRouter.js";
 import categoryModel from "../models/Category.js";
 import productModel, { ProductDocument } from "../models/Product.js";
 import { FilterQuery } from "mongoose";
+import { Extension } from "../util/ExtendedRequest.js";
 
 export const productRouter = express.Router();
 
 productRouter.get("/:_id", (req, res, next) => {
   wrapper(async () => {
-    const reqAny: any = req;
+    const extension: Extension = req.body.__ext;
     const result = await productModel.findById(req.params._id).populate("categories").exec();
     if (result) {
       if (result.mainImg) {
-        result.mainImg = reqAny.__host + result.mainImg;
+        result.mainImg = extension.host + result.mainImg;
       }
       if (result.images && result.images.length > 0) {
-        result.images = result.images.map((x) => reqAny.__host + x);
+        result.images = result.images.map((x) => extension.host + x);
       }
     }
     return res.status(200).json(new ResultBuilder().ok().body(result?.toObject()).result);
@@ -30,7 +31,7 @@ productRouter.get("/:_id", (req, res, next) => {
 
 productRouter.get("/", (req, res) => {
   wrapper(async () => {
-    const reqAny: any = req;
+    const extension: Extension = req.body.__ext;
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
     const inStock = req.query.inStock === "true";
@@ -64,8 +65,8 @@ productRouter.get("/", (req, res) => {
     if (prods.docs && prods.docs.length > 0) {
       prods.docs = prods.docs.map<any>((x) => ({
         ...x,
-        mainImg: x.mainImg ? reqAny.__host + x.mainImg : x.mainImg,
-        images: x.images.map((y) => reqAny.__host + y),
+        mainImg: x.mainImg ? extension.host + x.mainImg : x.mainImg,
+        images: x.images.map((y) => extension.host + y),
       }));
     }
     res.status(200).json(new ResultBuilder().ok().body(prods).result);

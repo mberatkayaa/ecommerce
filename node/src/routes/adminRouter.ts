@@ -6,31 +6,35 @@ import { ResultBuilder } from "../util/ResultBuilder.js";
 import userModel from "../models/User.js";
 import { adminProductRouter } from "./admin/adminProductRouter.js";
 import { adminCategoryRouter } from "./admin/adminCategoryRouter.js";
+import { Extension } from "../util/ExtendedRequest.js";
 
 export const adminRouter = express.Router();
 
 adminRouter.use("/", (req, res, next) => {
-  // decodeToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZUBxcSIsIl9pZCI6IjY1YjJiMzUzYzVmOGIxMGM5ZjFlZmQ4OCIsImlhdCI6MTcwNjIxMDEzMSwiZXhwIjoxNzA4ODAyMTMxfQ.D9SbeiQAfwScXXTdZuNDrtuyVsDDs9BG8Hcy7QxGHnU")
   wrapper(async () => {
-    if (!req.headers.authorization) {
+    const extension: Extension = req.body.__ext;
+    if (!extension.auth) {
       return res.status(401).json(new ResultBuilder().error("Lütfen kullanıcı girişi yapınız!").result);
     }
-    const token = req.headers.authorization.replace("Bearer", "").trim();
-    if (!verifyToken(token)) {
+
+    if (!extension.auth.tokenVerified) {
       return res.status(401).json(new ResultBuilder().error("Geçersiz JWT!").result);
     }
-    const decoded = decodeToken(token);
-    if (!decoded)
+    if (!extension.auth.decoded || !extension.auth.user)
       return res.status(401).json(new ResultBuilder().error("Belirtilen kullanıcı sistemde tanımlı değil!").result);
 
-    const user = await userModel.findOne({ email: decoded.email, _id: decoded._id });
-    if (!user)
-      return res.status(401).json(new ResultBuilder().error("Belirtilen kullanıcı sistemde tanımlı değil!").result);
-
-    if (!user.admin) return res.status(401).json(new ResultBuilder().error("Yetki yok!").result);
+    if (!extension.auth.user.admin) return res.status(401).json(new ResultBuilder().error("Yetki yok!").result);
 
     next();
   }, res);
+});
+
+/* Kullanıcının admin rotasına girişinin 
+olup olmadığını kontrol eden basit bir request handler. 
+Yukarıda admin değilse zaten 401 gönderilecek ve bu rotaya gelinmeyecek. 
+O yüzden burada sadece 200 göndermek yeterli. */
+adminRouter.get("/", (req, res) => {
+  return res.status(200).send();
 });
 
 adminRouter.use("/products", adminProductRouter);
