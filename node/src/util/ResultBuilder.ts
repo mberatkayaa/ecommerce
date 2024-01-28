@@ -3,6 +3,7 @@ const initialValue: Result = {
   error: false,
   message: "",
   body: {},
+  source: "dedicatedServer",
 };
 
 export interface Result {
@@ -10,6 +11,7 @@ export interface Result {
   error: boolean;
   message: string;
   body: { [key: string]: any };
+  source: "dedicatedServer";
 }
 
 export class ResultBuilder {
@@ -23,27 +25,27 @@ export class ResultBuilder {
     return JSON.stringify(this.result);
   }
 
-  reset ()  {
+  reset() {
     this._obj = { ...initialValue };
     return this;
-  };
+  }
 
-  error (message?: string)  {
+  error(message?: string) {
     this._obj.error = true;
     this._obj.ok = false;
     this._obj.message = message || "";
     return this;
-  };
+  }
 
-  ok (message?: string)  {
+  ok(message?: string) {
     this._obj.error = false;
     this._obj.ok = true;
     this._obj.message = message || "";
     return this;
-  };
+  }
 
-  body (body?: { [key: string]: any })  {
+  body(body?: { [key: string]: any }) {
     this._obj.body = body || {};
     return this;
-  };
+  }
 }

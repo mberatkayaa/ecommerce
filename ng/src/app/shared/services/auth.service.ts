@@ -34,16 +34,7 @@ export class AuthService {
     this.user.next(null);
     this.clearInterval();
   }
-  makeDate(): Date; // 1. Bir parametreli
-  makeDate(m: number, d: number, y: number): Date; // 2. Üç parametreli
-  makeDate(mOrTimestamp?: number, d?: number, y?: number): Date {
-    // 3. Üç parametreli
-    if (d !== undefined && y !== undefined) {
-      return new Date(y, mOrTimestamp, d);
-    } else {
-      return new Date(mOrTimestamp);
-    }
-  }
+  
   isAdmin(): Observable<any>;
   isAdmin(email: string, password: string): Observable<any>;
   isAdmin(email?: string, password?: string): Observable<any> {

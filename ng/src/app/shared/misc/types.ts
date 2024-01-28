@@ -3,6 +3,7 @@ export interface HttpResult<T> {
   error: boolean;
   message: string;
   body: T;
+  source: string;
 }
 
 export interface PaginatedHttpResult<T>
