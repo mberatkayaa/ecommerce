@@ -3,6 +3,7 @@ import { IconsService } from "../../../shared/services/icons.service";
 import { CategoryService } from "../../../shared/services/category.service";
 import { Category } from "../../../shared/models/Category.model";
 import { Subscription } from "rxjs";
+import { NotificationHandlerService } from "../../../shared/services/notification-handler.service";
 
 @Component({
   selector: "app-admin-categories-page",
@@ -16,7 +17,11 @@ export class AdminCategoriesPageComponent implements OnInit, OnDestroy {
   enteredTitle: string = "";
   categories: Array<Category> = [];
 
-  constructor(protected iconsService: IconsService, private categoryService: CategoryService) {}
+  constructor(
+    protected iconsService: IconsService,
+    private categoryService: CategoryService,
+    private notificationHandler: NotificationHandlerService
+  ) {}
 
   ngOnInit(): void {
     this.subscription = this.categoryService.categories.subscribe({
@@ -34,7 +39,35 @@ export class AdminCategoriesPageComponent implements OnInit, OnDestroy {
   createCategoryHandler() {
     this.categoryService.addCategory(this.enteredGroup, this.enteredTitle).subscribe({
       next: (value) => {
-        this.enteredTitle = "";
+        const { status, result, bag } = value;
+        if (status.loading) {
+          value.setBag(
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Oluşturuluyor",
+              description: "Kategori oluşturuluyor.",
+            })
+          );
+        } else if (status.completed) {
+          this.enteredTitle = "";
+          if (bag) {
+            this.notificationHandler.resolveNotification(bag);
+          }
+          if (status.error) {
+            this.notificationHandler.addNotification({
+              type: "error",
+              title: "Hata!",
+              description: result.message,
+            });
+          }
+          if (status.done) {
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Başarılı!",
+              description: "Kategori başarıyla oluşturuldu!",
+            });
+          }
+        }
       },
     });
   }

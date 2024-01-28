@@ -1,7 +1,7 @@
 import { inject } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from "@angular/router";
 import { AuthService } from "../services/auth.service";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, lastValueFrom } from "rxjs";
 import Swal from "sweetalert2";
 
 export const adminGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
@@ -41,9 +41,9 @@ export const adminGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, s
       },
     });
     const { email, password } = dialogResult.value;
-    const result = await firstValueFrom<any>(authService.isAdmin(email, password));
+    const result = await lastValueFrom<any>(authService.isAdmin(email, password));
   } else {
-    const result = await firstValueFrom<any>(authService.isAdmin());
+    const result = await lastValueFrom<any>(authService.isAdmin());
   }
   return true;
 };

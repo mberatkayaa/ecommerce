@@ -1,9 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { domain } from "../misc/constants";
-import { BehaviorSubject, Observable, catchError, concatMap, tap, throwError } from "rxjs";
+import { BehaviorSubject, Observable, catchError, concatMap, takeLast, tap, throwError } from "rxjs";
 import { User } from "../models/User.model";
 import { jwtDecode } from "jwt-decode";
+import { httpErr, notifier, processHttp } from "../misc/rxjsOperators";
+import { HttpResult } from "../misc/types";
 
 @Injectable({
   providedIn: "root",
@@ -21,53 +23,37 @@ export class AuthService {
     }
   }
 
-  signUp(email: string, password: string) {
-    return this.auth(email, password, "signup");
-  }
-
-  signIn(email: string, password: string) {
-    return this.auth(email, password, "signin");
-  }
-
   signOut() {
     localStorage.removeItem("token");
     this.user.next(null);
     this.clearInterval();
   }
-  
+
   isAdmin(): Observable<any>;
   isAdmin(email: string, password: string): Observable<any>;
   isAdmin(email?: string, password?: string): Observable<any> {
     if (!email) {
-      return this.http.get(domain + "admin").pipe(
-        catchError((err) => {
-          return throwError(() => err);
-        })
-      );
+      return this.http.get(domain + "admin").pipe(httpErr());
     }
 
     return this.auth(email, password).pipe(
+      takeLast(1),
       concatMap((val) => {
         return this.isAdmin();
       }),
-      catchError((err) => {
-        return throwError(() => err);
-      })
+      httpErr()
     );
   }
 
   auth(email: string, password: string, endPoint: "signin" | "signup" = "signin") {
-    return this.http.post(domain + endPoint, { email, password }).pipe(
-      catchError((err) => {
-        let message = "Sunucuya erişim sağlanamadı!";
-        if (err.error && err.error.message) {
-          message = err.error.message;
-        }
-        return throwError(() => message);
-      }),
-      tap((data: any) => {
-        this.signedInHandler(data.body.token);
-      })
+    return notifier<any>(
+      this.http.post<HttpResult<any>>(domain + endPoint, { email, password }).pipe(
+        httpErr(),
+        tap((data: any) => {
+          this.signedInHandler(data.body.token);
+        })
+      ),
+      true
     );
   }
 

@@ -1,105 +1,92 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subject, map, tap } from "rxjs";
+import { BehaviorSubject, Subject, map, take, takeLast, tap } from "rxjs";
 import { Category } from "../models/Category.model";
 import { domain } from "../misc/constants";
 import { HttpStatus } from "../misc/HttpStatus";
 import { getGroupName } from "../misc/helpers";
+import { HttpStreamResult, httpErr, notifier } from "../misc/rxjsOperators";
+import { HttpResult } from "../misc/types";
 
 @Injectable({
   providedIn: "root",
 })
 export class CategoryService {
   categories = new BehaviorSubject<Array<Category>>(null);
-  status = new BehaviorSubject<HttpStatus>(new HttpStatus());
 
   constructor(private http: HttpClient) {}
 
-  refreshCategories(subject?: Subject<HttpStatus>) {
-    this.statusSubject(new HttpStatus().set("loading", true), subject);
-    return this.http.get(domain + "categories").pipe(
-      map(this.mapFn),
+  /*+*/refreshCategories() {
+    return notifier(
+      this.http.get<HttpResult<any>>(domain + "categories").pipe(httpErr("Kategoriler okunurken bir hata oluştu!"))
+    ).pipe(
+      takeLast(1),
+      map<HttpStreamResult<any>, HttpStreamResult<any>>(this.mapFn),
       tap({
         next: (data) => {
-          this.categories.next(data);
-          this.statusSubject(new HttpStatus().set("done", true), subject);
-        },
-        error: (err) => {
-          let message = err.message || "Kategoriler okunurken bir hata oluştu!";
-          if (err.error && err.error.message) message = err.error.message;
-          this.statusSubject(new HttpStatus().set("error", true).set("message", message), subject);
+          this.categories.next(data.result.body);
         },
       })
     );
   }
 
-  addCategory(group: string, title: string, subject?: Subject<HttpStatus>) {
-    this.statusSubject(new HttpStatus().set("loading", true), subject);
-    return this.http.post(domain + "admin/categories/add", { group, title }).pipe(
-      map(this.mapFn),
+  /*+*/addCategory(group: string, title: string) {
+    return notifier(
+      this.http
+        .post<HttpResult<any>>(domain + "admin/categories/add", { group, title })
+        .pipe(httpErr("Kategori oluşturulurken bir hata oluştu!"))
+    ).pipe(
+      takeLast(1),
+      map<HttpStreamResult<any>, HttpStreamResult<any>>(this.mapFn),
       tap({
         next: (data) => {
-          this.categories.next([...this.categories.value, data]);
-          this.statusSubject(new HttpStatus().set("done", true), subject);
-        },
-        error: (err) => {
-          let message = err.message || "Kategori oluşturulurken bir hata oluştu!";
-          if (err.error && err.error.message) message = err.error.message;
-          this.statusSubject(new HttpStatus().set("error", true).set("message", message), subject);
+          this.categories.next([...this.categories.value, data.result.body]);
         },
       })
     );
   }
 
-  editCategory(_id: string, group: string, title: string, subject?: Subject<HttpStatus>) {
-    this.statusSubject(new HttpStatus().set("loading", true), subject);
-    return this.http.patch(domain + "admin/categories/edit", { _id, group, title }).pipe(
-      map(this.mapFn),
+  /*+*/editCategory(_id: string, group: string, title: string) {
+    return notifier(
+      this.http
+        .patch(domain + "admin/categories/edit", { _id, group, title })
+        .pipe(httpErr("Kategori düzenlenirken bir hata oluştu!"))
+    ).pipe(
+      takeLast(1),
+      map<HttpStreamResult<any>, HttpStreamResult<any>>(this.mapFn),
       tap({
         next: (data) => {
-          const category = data;
+          const category = data.result.body;
           this.categories.next([...this.categories.value.filter((x) => x._id !== _id), category]);
-          this.statusSubject(new HttpStatus().set("done", true), subject);
-        },
-        error: (err) => {
-          let message = err.message || "Kategori düzenlenirken bir hata oluştu!";
-          if (err.error && err.error.message) message = err.error.message;
-          this.statusSubject(new HttpStatus().set("error", true), subject);
         },
       })
     );
   }
 
-  deleteCategory(_id: string, subject?: Subject<HttpStatus>) {
-    this.statusSubject(new HttpStatus().set("loading", true), subject);
-    return this.http.delete(domain + "admin/categories/delete/" + _id).pipe(
+  /*+*/deleteCategory(_id: string) {
+    return notifier(
+      this.http
+        .delete(domain + "admin/categories/delete/" + _id)
+        .pipe(httpErr("Kategori düzenlenirken bir hata oluştu!"))
+    ).pipe(
       tap({
         next: (data) => {
           this.categories.next([...this.categories.value.filter((x) => x._id !== _id)]);
-          this.statusSubject(new HttpStatus().set("done", true), subject);
-        },
-        error: (err) => {
-          let message = err.message || "Kategori düzenlenirken bir hata oluştu!";
-          if (err.error && err.error.message) message = err.error.message;
-          this.statusSubject(new HttpStatus().set("error", true), subject);
         },
       })
     );
   }
 
   mapFn(value) {
-    if (!value || !value.body) return value;
+    if (!value || !value.result || !value.result.body) return value;
 
-    if (Array.isArray(value.body)) {
-      return value.body.map((x) => ({ ...x, group: getGroupName(x.group) }));
+    const obj = value.result.body;
+    if (Array.isArray(obj)) {
+      value.result.body = obj.map((x) => ({ ...x, group: getGroupName(x.group) }));
+    } else if (obj.group) {
+      value.result.body = { ...obj, group: getGroupName(obj.group) };
     }
-    if (value.body.group) return { ...value.body, group: getGroupName(value.body.group) };
 
     return value;
-  }
-
-  statusSubject(status: HttpStatus, externalSubject?: Subject<HttpStatus>, onlyExternal: boolean = false) {
-    if (!onlyExternal) this.status.next(status);
-    externalSubject?.next(status);
   }
 }

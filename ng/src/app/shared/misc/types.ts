@@ -8,3 +8,11 @@ export interface HttpResult<T> {
 
 export interface PaginatedHttpResult<T>
   extends HttpResult<{ docs: Array<T>; page: number; totalPages: number; totalDocs: number }> {}
+
+export interface INotification {
+  type: "error" | "notification";
+  title: string;
+  description: string;
+  payload?: any;
+  time?: number;
+}

@@ -4,6 +4,7 @@ import { CategoryService } from "../../../shared/services/category.service";
 import { Subject, Subscription } from "rxjs";
 import { HttpStatus } from "../../../shared/misc/HttpStatus";
 import { getGroupValue } from "../../../shared/misc/helpers";
+import { NotificationHandlerService } from "../../../shared/services/notification-handler.service";
 
 @Component({
   selector: "[app-category-row]",
@@ -41,7 +42,6 @@ import { getGroupValue } from "../../../shared/misc/helpers";
   `,
 })
 export class CategoryRowComponent implements OnInit, OnDestroy {
-  private status: Subject<HttpStatus>;
   private subscription: Subscription;
 
   @Input() rowNumber: number = 0;
@@ -53,14 +53,15 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
   enteredGroup: string = "mousePad";
   enteredTitle: string = "";
 
-  constructor(protected iconsService: IconsService, private categoryService: CategoryService) {}
+  constructor(
+    protected iconsService: IconsService,
+    private categoryService: CategoryService,
+    private notificationHandler: NotificationHandlerService
+  ) {}
 
-  ngOnInit(): void {
-    this.status = new Subject<HttpStatus>();
-  }
-  ngOnDestroy(): void {
-    this.clearSubscription();
-  }
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {}
 
   editSaveHandler() {
     if (!this.editMode) {
@@ -69,19 +70,40 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
       this.editMode = true;
       return;
     }
-    this.subscription = this.status.subscribe({
+    this.categoryService.editCategory(this._id, this.enteredGroup, this.enteredTitle).subscribe({
       next: (value) => {
-        if (value.done) {
-          this.editMode = false;
-          console.log("Değişiklikler kaydedildi.");
-        } else if (value.error) {
-          console.log("Hata");
+        const { status, result, bag } = value;
+        if (status.loading) {
+          value.setBag(
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Düzenleniyor",
+              description: "Kategori düzenleniyor.",
+            })
+          );
+        } else if (status.completed) {
+          this.enteredTitle = "";
+          if (bag) {
+            this.notificationHandler.resolveNotification(bag);
+          }
+          if (status.error) {
+            this.notificationHandler.addNotification({
+              type: "error",
+              title: "Hata!",
+              description: result.message,
+            });
+          }
+          if (status.done) {
+            this.editMode = false;
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Başarılı!",
+              description: "Kategori başarıyla düzenlendi!",
+            });
+          }
         }
-
-        if (value.completed) this.clearSubscription();
       },
     });
-    this.categoryService.editCategory(this._id, this.enteredGroup, this.enteredTitle, this.status).subscribe();
   }
 
   deleteCancelHandler() {
@@ -89,25 +111,39 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
       this.editMode = false;
       return;
     }
-    this.subscription = this.status.subscribe({
+    this.categoryService.deleteCategory(this._id).subscribe({
       next: (value) => {
-        if (value.done) {
-          this.editMode = false;
-          console.log("Değişiklikler kaydedildi.");
-        } else if (value.error) {
-          console.log("Hata");
+        const { status, result, bag } = value;
+        if (status.loading) {
+          value.setBag(
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Kaldırılıyor",
+              description: "Kategori kaldırılıyor.",
+            })
+          );
+        } else if (status.completed) {
+          this.enteredTitle = "";
+          if (bag) {
+            this.notificationHandler.resolveNotification(bag);
+          }
+          if (status.error) {
+            this.notificationHandler.addNotification({
+              type: "error",
+              title: "Hata!",
+              description: result.message,
+            });
+          }
+          if (status.done) {
+            this.editMode = false;
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Başarılı!",
+              description: "Kategori başarıyla kaldırıldı!",
+            });
+          }
         }
-
-        if (value.completed) this.clearSubscription();
       },
     });
-    this.categoryService.deleteCategory(this._id, this.status).subscribe();
-  }
-
-  clearSubscription() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
   }
 }

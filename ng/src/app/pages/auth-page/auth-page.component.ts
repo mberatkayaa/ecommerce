@@ -7,6 +7,7 @@ import { IconsService } from "../../shared/services/icons.service";
 import { SwalComponent } from "@sweetalert2/ngx-sweetalert2";
 import Swal from "sweetalert2";
 import { AuthService } from "../../shared/services/auth.service";
+import { HttpStreamResult } from "../../shared/misc/rxjsOperators";
 
 @Component({
   selector: "app-auth-page",
@@ -46,20 +47,21 @@ export class AuthPageComponent implements OnInit {
 
   async submitHandler() {
     if (this.authForm.valid) {
-      this.loadingSwal.fire();
-
       this.authService.auth(this.authForm.value["email"], this.authForm.value["password"], this.mode).subscribe({
-        next: (async (data) => {
-          console.log(data);
+        next: async (data: HttpStreamResult<any>) => {
+          const { status, result } = data;
+          if (status.loading) {
+            this.loadingSwal.fire();
+          } else if (status.completed) {
+            await this.loadingSwal.close();
+            await this.successSwal.fire();
+          }
+        },
+        error: async (err: HttpStreamResult<any>) => {
           await this.loadingSwal.close();
-          await this.successSwal.fire();
-        }).bind(this),
-        error: (async (err) => {
-          console.log(err);
-          await this.loadingSwal.close();
-          this.errorSwal.text = err;
+          this.errorSwal.text = err.result.message;
           await this.errorSwal.fire();
-        }).bind(this),
+        },
       });
     }
   }

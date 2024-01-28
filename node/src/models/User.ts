@@ -17,14 +17,16 @@ const userSchema = new Schema({
     default: false,
   },
   cart: {
-    items: {
-      productId: {
-        type: Schema.Types.ObjectId,
-        ref: "Product",
-        required: true,
+    items: [
+      {
+        productId: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: { type: Number, required: true },
       },
-      quantity: { type: Number, required: true },
-    },
+    ],
   },
 });
 

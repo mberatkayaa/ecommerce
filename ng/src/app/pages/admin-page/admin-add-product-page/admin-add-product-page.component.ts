@@ -8,6 +8,8 @@ import { Subscription } from "rxjs";
 import { Category } from "../../../shared/models/Category.model";
 import { ActivatedRoute, Data } from "@angular/router";
 import { Product } from "../../../shared/models/Product.model";
+import { ProductService } from "../../../shared/services/product.service";
+import { NotificationHandlerService } from "../../../shared/services/notification-handler.service";
 
 @Component({
   selector: "app-admin-add-product-page",
@@ -33,7 +35,9 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
     protected iconsService: IconsService,
     private http: HttpClient,
     private categoryService: CategoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private notificationHandler: NotificationHandlerService
   ) {}
 
   ngOnInit() {
@@ -128,22 +132,44 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
         formData.append(key, element);
       }
     }
-    const url = `${domain}admin/products/${!this.edit ? "add" : `edit/${this.product._id}`}`;
-    const obs = this.edit ? this.http.patch(url, formData) : this.http.post(url, formData);
-    obs.subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
-    return;
-    console.log(this.productForm);
-    console.log(this.productForm.value);
 
-    this.http.post(domain + "admin/products/add", obj).subscribe({
-      next: (result) => {
-        console.log("Add product done: ", result);
+    const obs = this.edit
+      ? this.productService.editProduct(formData, this.product._id)
+      : this.productService.addProduct(formData);
+    obs.subscribe({
+      next: (value) => {
+        const { status, result, bag } = value;
+        if (status.loading) {
+          value.setBag(
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: this.edit ? "Düzenleniyor" : "Oluşturuluyor",
+              description: `Ürün ${this.edit ? "düzenleniyor." : "oluşturuluyor."}`,
+            })
+          );
+        } else if (status.completed) {
+          if (bag) {
+            this.notificationHandler.resolveNotification(bag);
+          }
+          if (status.done) {
+            this.notificationHandler.addNotification({
+              type: "notification",
+              title: "Başarılı!",
+              description: `Ürün başarıyla ${this.edit ? "düzenlendi!" : "oluşturuldu!"}`,
+            });
+          }
+        }
       },
-      error: (err) => {
-        console.log("Add product failed: ", err);
+      error: (value) => {
+        const { result, bag } = value;
+        if (bag) {
+          this.notificationHandler.resolveNotification(bag);
+        }
+        this.notificationHandler.addNotification({
+          type: "error",
+          title: "Hata!",
+          description: result.message,
+        });
       },
     });
   }

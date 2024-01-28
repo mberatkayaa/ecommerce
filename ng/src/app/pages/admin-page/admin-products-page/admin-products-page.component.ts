@@ -6,6 +6,8 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { PaginatedHttpResult } from "../../../shared/misc/types";
 import { domain } from "../../../shared/misc/constants";
 import { QueryParams } from "../../../shared/misc/QueryParams";
+import { ProductService } from "../../../shared/services/product.service";
+import { NotificationHandlerService } from "../../../shared/services/notification-handler.service";
 
 @Component({
   selector: "app-admin-products-page",
@@ -51,7 +53,9 @@ export class AdminProductsPageComponent implements OnInit {
     protected iconsService: IconsService,
     private router: Router,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private productService: ProductService,
+    private notificationHandler: NotificationHandlerService
   ) {}
 
   ngOnInit(): void {
@@ -67,18 +71,53 @@ export class AdminProductsPageComponent implements OnInit {
         if (limit < this.limits[0] || limit > this.limits[this.limits.length - 1]) limit = this.limits[0];
         this.queryParams.obj.limit = limit;
         if (value.cold) return;
-        this.http
-          .get<PaginatedHttpResult<Product>>(domain + "products", {
-            params: this.queryParams.httpParams(),
-          })
-          .subscribe({
-            next: (result) => {
+
+        this.productService.getProducts(this.queryParams.httpParams()).subscribe({
+          next: (value) => {
+            const { status, result, bag } = value;
+            if (status.loading) {
+              value.setBag(
+                this.notificationHandler.addNotification({
+                  type: "notification",
+                  title: "Okunuyor",
+                  description: "Ürünler okunuyor.",
+                })
+              );
+            } else if (status.completed) {
+              if (bag) {
+                this.notificationHandler.resolveNotification(bag);
+              }
+
               this.totalPages = result.body.totalPages;
               this.products = result.body.docs;
               this.totalDocs = result.body.totalDocs;
               this.setPageButtons();
-            },
-          });
+            }
+          },
+          error: (value) => {
+            const { bag } = value;
+            if (bag) {
+              this.notificationHandler.resolveNotification(bag);
+            }
+            this.notificationHandler.addNotification({
+              type: "error",
+              title: "Hata!",
+              description: "Ürünler okunurken bir sorun oluştu!",
+            });
+          },
+        });
+        //   this.http
+        //     .get<PaginatedHttpResult<Product>>(domain + "products", {
+        //       params: this.queryParams.httpParams(),
+        //     })
+        //     .subscribe({
+        //       next: (result) => {
+        //         this.totalPages = result.body.totalPages;
+        //         this.products = result.body.docs;
+        //         this.totalDocs = result.body.totalDocs;
+        //         this.setPageButtons();
+        //       },
+        //     });
       },
     });
   }
