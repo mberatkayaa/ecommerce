@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from "@angular/router";
-import { ProductService } from "./product.service";
+import { ProductService } from "../services/product.service";
 import { firstValueFrom } from "rxjs";
 import { Product } from "../models/Product.model";
 
