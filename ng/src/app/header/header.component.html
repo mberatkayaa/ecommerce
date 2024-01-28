@@ -18,9 +18,12 @@
         class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
         [icon]="iconsService.user" />
       <div class="text-base-content group-hover:text-primary flex flex-col">
-        <a [routerLink]="!user ? '/signin' : '/profile'" class="font-semibold opacity-75 hover:opacity-100 text-sm">
-          {{ !user ? "ÜYE GİRİŞİ" : "HESABIM" }}
+        <a *ngIf="!user" [routerLink]="'/signin'" class="font-semibold opacity-75 hover:opacity-100 text-sm">
+          {{ "ÜYE GİRİŞİ" }}
         </a>
+        <span *ngIf="user" [title]="user.email" class="font-semibold opacity-75 hover:opacity-100 text-sm w-20 truncate">
+          {{ user.email }}
+        </span>
         <a
           [routerLink]="!user ? '/signup' : null"
           class="mt-auto mb-2 font-normal opacity-75 hover:opacity-100 text-xs cursor-pointer"
