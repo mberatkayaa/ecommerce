@@ -6,14 +6,20 @@ import { AdminPageComponent } from "./pages/admin-page/admin-page.component";
 import { AdminProductsPageComponent } from "./pages/admin-page/admin-products-page/admin-products-page.component";
 import { AdminAddProductPageComponent } from "./pages/admin-page/admin-add-product-page/admin-add-product-page.component";
 import { AdminCategoriesPageComponent } from "./pages/admin-page/admin-categories-page/admin-categories-page.component";
-import { productResolver } from "./shared/services/product.resolver";
+import { productResolver } from "./shared/resolvers/product.resolver";
+import { adminGuard } from "./shared/guards/admin.guard";
+import { authGuard } from "./shared/guards/auth.guard";
 
 const routes: Routes = [
-  { path: "", component: HomePageComponent },
-  { path: "signup", component: AuthPageComponent, data: { mode: "signup" } },
-  { path: "signin", component: AuthPageComponent, data: { mode: "signin" } },
+  {
+    path: "",
+    component: HomePageComponent,
+  },
+  { path: "signup", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signup" } },
+  { path: "signin", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signin" } },
   {
     path: "admin",
+    canActivate: [adminGuard],
     component: AdminPageComponent,
     children: [
       { path: "products", component: AdminProductsPageComponent },
