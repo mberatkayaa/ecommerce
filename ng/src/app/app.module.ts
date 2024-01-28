@@ -34,6 +34,8 @@ import { CategoryRowComponent } from "./pages/admin-page/admin-categories-page/c
 import { LayoutService } from "./shared/services/layout.service";
 import { LayoutDirective } from './shared/directives/layout.directive';
 import { FileNamePipe } from './shared/pipes/file-name.pipe';
+import { NotificationComponent } from './shared/components/notification/notification.component';
+import { NotificationTickDirective } from './shared/directives/notification-tick.directive';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { FileNamePipe } from './shared/pipes/file-name.pipe';
     AdminCategoriesPageComponent,
     CategoryRowComponent,
     LayoutDirective,
-    FileNamePipe
+    FileNamePipe,
+    NotificationComponent,
+    NotificationTickDirective
   ],
   imports: [
     BrowserModule,

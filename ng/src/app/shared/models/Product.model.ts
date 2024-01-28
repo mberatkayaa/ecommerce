@@ -11,4 +11,5 @@ export interface Product {
   mainImg: string;
   images: Array<string>;
   categories?: Array<Category>;
+  groups?: Array<{ name: string; value: string }>;
 }

@@ -17,6 +17,7 @@ productRouter.get("/:_id", (req, res, next) => {
   wrapper(async () => {
     const extension: Extension = req.body.__ext;
     const result = await productModel.findById(req.params._id).populate("categories").exec();
+    if (!result) return res.status(404).json(new ResultBuilder().error("İlgili ürün bulunamadı!").result);
     if (result) {
       if (result.mainImg) {
         result.mainImg = extension.host + result.mainImg;

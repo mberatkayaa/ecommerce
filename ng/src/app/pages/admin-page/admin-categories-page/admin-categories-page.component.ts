@@ -43,7 +43,7 @@ export class AdminCategoriesPageComponent implements OnInit, OnDestroy {
         if (status.loading) {
           value.setBag(
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "loading",
               title: "Oluşturuluyor",
               description: "Kategori oluşturuluyor.",
             })
@@ -62,7 +62,7 @@ export class AdminCategoriesPageComponent implements OnInit, OnDestroy {
           }
           if (status.done) {
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "success",
               title: "Başarılı!",
               description: "Kategori başarıyla oluşturuldu!",
             });

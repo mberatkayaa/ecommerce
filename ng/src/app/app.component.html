@@ -1,8 +1,12 @@
 <app-header *appLayout="'header'" />
 <app-navbar *appLayout="'navbar'" />
-<input type="checkbox" value="night" class="toggle theme-controller" />
-<div class="toast toast-top toast-center">
-  <div role="alert" class="alert alert-error">
+<div appNotificationTick *ngIf="sideNotifications.length > 0" class="toast toast-top toast-end z-30 w-[15%]">
+  <app-notification *ngFor="let ntf of sideNotifications" [notification]="ntf" />
+</div>
+<div appNotificationTick *ngIf="middleNotifications.length > 0" class="toast toast-middle toast-center z-30 w-[15%]">
+  <app-notification *ngFor="let ntf of middleNotifications" [notification]="ntf" />
+
+  <!-- <div role="alert" class="rounded-md alert alert-error">
     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
       <path
         stroke-linecap="round"
@@ -13,8 +17,48 @@
     <span>Error! Task failed successfully.</span>
   </div>
 
-  <div class="alert alert-success">
-    <span>Message sent successfully.</span>
+  <div role="alert" [class]="'relative alert shadow-lg border-0 rounded-md max-h-20 auto-rows-fr p-2 pb-3'">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <span class="loading loading-spinner loading-lg"></span>
+    <div class="overflow-auto min-h-0 h-full">
+      <h3 class="font-bold text-wrap break-all">
+        qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      </h3>
+      <div class="text-xs text-wrap break-all">
+        qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+        qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      </div>
+    </div>
+    <div>
+      <ng-content></ng-content>
+    </div>
+    <progress class="progress absolute bottom-0 left-0 right-0 w-auto" [value]="'50'" max="100"></progress>
   </div>
+
+  <div class="alert alert-success">
+    <div>
+      <span class="loading loading-ball w-8"></span>
+      <span class="loading loading-ball w-6"></span>
+      <span class="loading loading-ball w-4"></span>
+      <span class="loading loading-ball w-6"></span>
+      <span class="loading loading-ball w-8"></span>
+    </div>
+    <span>Message sent successfully.</span>
+  </div> -->
 </div>
 <router-outlet />
+<swal
+  #loadingSwal
+  title=""
+  text="Lütfen bekleyiniz."
+  [allowEnterKey]="false"
+  [allowEscapeKey]="false"
+  [allowOutsideClick]="false"
+  (didOpen)="swalDidOpenHandler()"
+  [showConfirmButton]="false"></swal>

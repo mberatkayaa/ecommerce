@@ -1,4 +1,4 @@
-const groupNames = [
+export const groups = [
   { value: "mousePad", name: "Mouse Pad" },
   { value: "bardak", name: "Kupa Bardak" },
   { value: "patch", name: "Patch & Yama" },
@@ -9,12 +9,12 @@ const groupNames = [
 
 export function getGroupName(value: string): string {
   let result = value;
-  result = groupNames.find((x) => x.value === value)?.name;
+  result = groups.find((x) => x.value === value)?.name;
   return result;
 }
 
 export function getGroupValue(name: string): string {
   let result = name;
-  result = groupNames.find((x) => x.name === name)?.value;
+  result = groups.find((x) => x.name === name)?.value;
   return result;
 }

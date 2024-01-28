@@ -14,7 +14,8 @@ export class ProductService {
 
   getProduct(id: string) {
     return notifier(
-      this.http.get<HttpResult<Product>>(domain + "products/" + id).pipe(httpErr("Ürün okunurken bir hata oluştu!"))
+      this.http.get<HttpResult<Product>>(domain + "products/" + id).pipe(httpErr("Ürün okunurken bir hata oluştu!")),
+      true
     );
   }
 

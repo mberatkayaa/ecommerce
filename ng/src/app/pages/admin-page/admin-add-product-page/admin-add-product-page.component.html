@@ -5,6 +5,12 @@
     class="flex flex-col gap-3 overflow-auto max-h-full self-start p-3 shadow-md rounded m-3">
     <h1 class="text-2xl font-bold">Ürün Formu</h1>
     <div class="form-control">
+      <label class="label cursor-pointer inline-flex items-center justify-start gap-2">
+        <input type="checkbox" [checked]="isGroup" (change)="isGroup = $event.target.checked" class="checkbox checkbox-sm mr-1 checkbox-primary" />
+        <span class="label-text text-base">Grup Ürünü</span>
+      </label>
+    </div>
+    <div class="form-control">
       <label for="title" class="label">Ürün Adı</label>
       <input type="text" id="title" formControlName="title" class="input input-bordered input-sm w-full" />
     </div>
@@ -56,7 +62,9 @@
               class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
             <div class="card bg-base-100 shadow-xl" *ngIf="mainImgURL || existingMainImg">
               <figure class="!justify-between px-3">
-                <span class="truncate text-sm">Ana Resim: {{ mainImgURL ? mainImgFile.name : (existingMainImg | fileName)}}</span>
+                <span class="truncate text-sm">
+                  Ana Resim: {{ mainImgURL ? mainImgFile.name : (existingMainImg | fileName) }}
+                </span>
                 <button
                   class="text-lg w-9 h-9 text-error/80 hover:text-error"
                   (click)="removeImgHandler('mainImg', existingMainImg)">
@@ -109,7 +117,7 @@
         </div>
       </div>
     </div>
-    <div class="collapse shadow-md m-3 rounded">
+    <div class="collapse shadow-md m-3 rounded" *ngIf="!isGroup">
       <input type="radio" name="accordion" />
       <div class="collapse-title text-xl font-medium">Kategoriler</div>
       <div class="collapse-content">
@@ -126,6 +134,24 @@
                 class="checkbox checkbox-sm mr-1 checkbox-primary"
                 [checked]="cat.checked" />
               <span class="label-text">{{ cat.category.title }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse shadow-md m-3 rounded" *ngIf="isGroup">
+      <input type="radio" name="accordion" />
+      <div class="collapse-title text-xl font-medium">Gruplar</div>
+      <div class="collapse-content">
+        <div class="grid content-start p-2 gap-3 overflow-auto max-h-full self-start">
+          <div class="flex flex-wrap content-start gap-4">
+            <label class="label cursor-pointer inline-flex items-center" *ngFor="let grp of groups">
+              <input
+                type="checkbox"
+                (change)="grpCheckedChangedHandler(grp.group.value, $event.target.checked)"
+                class="checkbox checkbox-sm mr-1 checkbox-primary"
+                [checked]="grp.checked" />
+              <span class="label-text">{{ grp.group.name }}</span>
             </label>
           </div>
         </div>

@@ -78,7 +78,7 @@ export class AdminProductsPageComponent implements OnInit {
             if (status.loading) {
               value.setBag(
                 this.notificationHandler.addNotification({
-                  type: "notification",
+                  type: "loading",
                   title: "Okunuyor",
                   description: "Ürünler okunuyor.",
                 })

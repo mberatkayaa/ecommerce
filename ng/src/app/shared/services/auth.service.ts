@@ -33,15 +33,14 @@ export class AuthService {
   isAdmin(email: string, password: string): Observable<any>;
   isAdmin(email?: string, password?: string): Observable<any> {
     if (!email) {
-      return this.http.get(domain + "admin").pipe(httpErr());
+      return notifier(this.http.get(domain + "admin").pipe(httpErr()), true);
     }
 
     return this.auth(email, password).pipe(
       takeLast(1),
       concatMap((val) => {
         return this.isAdmin();
-      }),
-      httpErr()
+      })
     );
   }
 

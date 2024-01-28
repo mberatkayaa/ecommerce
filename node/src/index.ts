@@ -14,6 +14,7 @@ import { productRouter } from "./routes/productRouter.js";
 import { decodeToken, verifyToken } from "./util/token.js";
 import userModel from "./models/User.js";
 import { Extension } from "./util/ExtendedRequest.js";
+import { groupRouter } from "./routes/groupRouter.js";
 
 dotenv.config();
 
@@ -55,6 +56,7 @@ app.use("/", authRouter);
 app.use("/admin", adminRouter);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
+app.use("/groups", groupRouter);
 
 app.get("/deneme4/:categoryIds", async (req, res) => {
   try {

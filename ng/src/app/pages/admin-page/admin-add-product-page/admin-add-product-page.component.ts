@@ -10,6 +10,7 @@ import { ActivatedRoute, Data } from "@angular/router";
 import { Product } from "../../../shared/models/Product.model";
 import { ProductService } from "../../../shared/services/product.service";
 import { NotificationHandlerService } from "../../../shared/services/notification-handler.service";
+import { groups } from "../../../shared/misc/helpers";
 
 @Component({
   selector: "app-admin-add-product-page",
@@ -21,10 +22,13 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
   private edit: boolean = true;
   private product: Product;
 
+  isGroup: boolean = false;
+
   existingMainImg: string = null;
   existingImages: Array<string> = [];
 
   categories: Array<{ category: Category; checked: boolean }> = [];
+  groups: Array<{ group: { value: string; name: string }; checked: boolean }> = [];
 
   productForm: FormGroup;
   mainImgFile;
@@ -62,6 +66,8 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
       },
     });
 
+    this.groups = groups.map((x) => ({ group: x, checked: false }));
+
     this.productForm = new FormGroup({
       title: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
@@ -96,6 +102,7 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
       },
     });
   }
+
   handleExistingProductCategories() {
     if (this.product && this.product.categories && this.product.categories.length > 0) {
       this.product.categories.forEach((x) => {
@@ -105,7 +112,17 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+    if (this.product && this.product.groups && this.product.groups.length > 0) {
+      this.product.groups.forEach((x) => {
+        const index = this.groups.findIndex((y) => y.group.value === x.value);
+        if (index >= 0) {
+          this.groups[index] = { group: x, checked: true };
+        }
+      });
+    }
   }
+
   ngOnDestroy(): void {
     this.clearSubscription();
   }
@@ -118,7 +135,10 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
     });
     const obj = {
       ...this.productForm.value,
-      categories: JSON.stringify(this.categories.filter((x) => x.checked).map((x) => x.category._id)),
+      categories: JSON.stringify(
+        this.isGroup ? [] : this.categories.filter((x) => x.checked).map((x) => x.category._id)
+      ),
+      groups: JSON.stringify(!this.isGroup ? [] : this.groups.filter((x) => x.checked).map((x) => x.group.value)),
     };
     if (this.existingMainImg) {
       obj.mainImg = this.existingMainImg;
@@ -142,7 +162,7 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
         if (status.loading) {
           value.setBag(
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "loading",
               title: this.edit ? "Düzenleniyor" : "Oluşturuluyor",
               description: `Ürün ${this.edit ? "düzenleniyor." : "oluşturuluyor."}`,
             })
@@ -153,7 +173,7 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
           }
           if (status.done) {
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "success",
               title: "Başarılı!",
               description: `Ürün başarıyla ${this.edit ? "düzenlendi!" : "oluşturuldu!"}`,
             });
@@ -220,6 +240,11 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
 
   checkedChangedHandler(catId: string, value: boolean) {
     const obj = this.categories.find((x) => x.category._id === catId);
+    if (obj) obj.checked = value;
+  }
+
+  grpCheckedChangedHandler(grpValue: string, value: boolean) {
+    const obj = this.groups.find((x) => x.group.value === grpValue);
     if (obj) obj.checked = value;
   }
 

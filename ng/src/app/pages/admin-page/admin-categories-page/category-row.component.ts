@@ -76,7 +76,7 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
         if (status.loading) {
           value.setBag(
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "loading",
               title: "Düzenleniyor",
               description: "Kategori düzenleniyor.",
             })
@@ -96,7 +96,7 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
           if (status.done) {
             this.editMode = false;
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "success",
               title: "Başarılı!",
               description: "Kategori başarıyla düzenlendi!",
             });
@@ -117,7 +117,7 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
         if (status.loading) {
           value.setBag(
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "loading",
               title: "Kaldırılıyor",
               description: "Kategori kaldırılıyor.",
             })
@@ -137,7 +137,7 @@ export class CategoryRowComponent implements OnInit, OnDestroy {
           if (status.done) {
             this.editMode = false;
             this.notificationHandler.addNotification({
-              type: "notification",
+              type: "success",
               title: "Başarılı!",
               description: "Kategori başarıyla kaldırıldı!",
             });
