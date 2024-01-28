@@ -41,6 +41,9 @@ export function processHttp(args?: { errorMessage?: string; asError?: boolean })
           if (args && args.asError) subscriber.error(resultBuilder.result);
           else subscriber.next(resultBuilder.result);
         },
+        complete() {
+          subscriber.complete();
+        }
       });
     });
   };
