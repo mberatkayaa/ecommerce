@@ -6,6 +6,8 @@ import { domain } from "../../../shared/misc/constants";
 import { CategoryService } from "../../../shared/services/category.service";
 import { Subscription } from "rxjs";
 import { Category } from "../../../shared/models/Category.model";
+import { ActivatedRoute, Data } from "@angular/router";
+import { Product } from "../../../shared/models/Product.model";
 
 @Component({
   selector: "app-admin-add-product-page",
@@ -14,6 +16,11 @@ import { Category } from "../../../shared/models/Category.model";
 })
 export class AdminAddProductPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  private edit: boolean = true;
+  private product: Product;
+
+  existingMainImg: string = null;
+  existingImages: Array<string> = [];
 
   categories: Array<{ category: Category; checked: boolean }> = [];
 
@@ -25,7 +32,8 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
   constructor(
     protected iconsService: IconsService,
     private http: HttpClient,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -46,6 +54,7 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
         this.categories = this.categories.filter((x) => {
           return value.findIndex((y) => y._id === x.category._id) >= 0;
         });
+        this.handleExistingProductCategories();
       },
     });
 
@@ -56,8 +65,43 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
       stock: new FormControl(null, [Validators.required, Validators.min(0)]),
       price: new FormControl(null, [Validators.required, Validators.min(0)]),
     });
-  }
 
+    this.route.data.subscribe({
+      next: (data: Data) => {
+        this.edit = data.edit;
+        this.product = data.product;
+        if (this.product) {
+          this.productForm.setValue({
+            title: this.product.title,
+            description: this.product.description,
+            unit: this.product.unit,
+            stock: this.product.stock,
+            price: this.product.price,
+          });
+
+          this.handleExistingProductCategories();
+
+          if (this.product.mainImg) {
+            this.existingMainImg = this.product.mainImg;
+          }
+
+          if (this.product.images) {
+            this.existingImages = this.product.images;
+          }
+        }
+      },
+    });
+  }
+  handleExistingProductCategories() {
+    if (this.product && this.product.categories && this.product.categories.length > 0) {
+      this.product.categories.forEach((x) => {
+        const index = this.categories.findIndex((y) => y.category._id === x._id);
+        if (index >= 0) {
+          this.categories[index] = { category: x, checked: true };
+        }
+      });
+    }
+  }
   ngOnDestroy(): void {
     this.clearSubscription();
   }
@@ -72,13 +116,21 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
       ...this.productForm.value,
       categories: JSON.stringify(this.categories.filter((x) => x.checked).map((x) => x.category._id)),
     };
+    if (this.existingMainImg) {
+      obj.mainImg = this.existingMainImg;
+    }
+    if (this.existingImages && this.existingImages.length > 0) {
+      obj.images = JSON.stringify(this.existingImages);
+    }
     for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         const element = obj[key];
         formData.append(key, element);
       }
     }
-    this.http.post<any>("http://localhost:3000/admin/products/add", formData).subscribe(
+    const url = `${domain}admin/products/${!this.edit ? "add" : `edit/${this.product._id}`}`;
+    const obs = this.edit ? this.http.patch(url, formData) : this.http.post(url, formData);
+    obs.subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
@@ -124,7 +176,14 @@ export class AdminAddProductPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeImgHandler(img: string | number) {
+  removeImgHandler(img: string | number, existing: boolean = false) {
+    if (existing) {
+      if (img === "mainImg") {
+        this.existingMainImg = null;
+      } else if (this.existingImages.length > +img) {
+        this.existingImages.splice(+img, 1);
+      }
+    }
     if (img === "mainImg") {
       this.mainImgFile = null;
       this.mainImgURL = null;

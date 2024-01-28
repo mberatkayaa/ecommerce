@@ -6,17 +6,28 @@ import { AdminPageComponent } from "./pages/admin-page/admin-page.component";
 import { AdminProductsPageComponent } from "./pages/admin-page/admin-products-page/admin-products-page.component";
 import { AdminAddProductPageComponent } from "./pages/admin-page/admin-add-product-page/admin-add-product-page.component";
 import { AdminCategoriesPageComponent } from "./pages/admin-page/admin-categories-page/admin-categories-page.component";
+import { productResolver } from "./shared/services/product.resolver";
 
 const routes: Routes = [
   { path: "", component: HomePageComponent },
   { path: "signup", component: AuthPageComponent, data: { mode: "signup" } },
   { path: "signin", component: AuthPageComponent, data: { mode: "signin" } },
-  { path: "admin", component: AdminPageComponent, children:[
-    {path:"products", component: AdminProductsPageComponent},
-    {path:"products/add", component: AdminAddProductPageComponent},
-    {path:"categories", component: AdminCategoriesPageComponent},
-    {path:"**", component:AdminPageComponent}
-  ] },
+  {
+    path: "admin",
+    component: AdminPageComponent,
+    children: [
+      { path: "products", component: AdminProductsPageComponent },
+      { path: "products/add", component: AdminAddProductPageComponent },
+      {
+        path: "products/edit/:id",
+        component: AdminAddProductPageComponent,
+        data: { edit: true },
+        resolve: { product: productResolver },
+      },
+      { path: "categories", component: AdminCategoriesPageComponent },
+      { path: "**", component: AdminPageComponent },
+    ],
+  },
   { path: "**", component: HomePageComponent },
 ];
 

@@ -44,7 +44,7 @@
             <label
               for="mainImg"
               class="label bg-primary/80 hover:bg-primary text-primary-content justify-center gap-3 rounded-lg cursor-pointer"
-              [ngClass]="{ hidden: mainImgURL, flex: !mainImgURL }">
+              [ngClass]="{ hidden: mainImgURL || existingMainImg, flex: !mainImgURL && !existingMainImg }">
               <span class="text-xl">Ana Resim</span>
               <fa-icon class="text-2xl" [icon]="iconsService.image"></fa-icon>
             </label>
@@ -54,14 +54,18 @@
               id="mainImg"
               (change)="mainImgSelectedHandler($event.target.files)"
               class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
-            <div class="card bg-base-100 shadow-xl" *ngIf="mainImgURL">
+            <div class="card bg-base-100 shadow-xl" *ngIf="mainImgURL || existingMainImg">
               <figure class="!justify-between px-3">
-                <span class="truncate text-sm">Ana Resim: {{ mainImgFile.name }}</span>
-                <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler('mainImg')">
+                <span class="truncate text-sm">Ana Resim: {{ mainImgURL ? mainImgFile.name : (existingMainImg | fileName)}}</span>
+                <button
+                  class="text-lg w-9 h-9 text-error/80 hover:text-error"
+                  (click)="removeImgHandler('mainImg', existingMainImg)">
                   <fa-icon [icon]="iconsService.xMark" />
                 </button>
               </figure>
-              <figure><img [src]="mainImgURL" alt="Ana resim" class="object-contain h-[14vh] mb-3" /></figure>
+              <figure>
+                <img [src]="existingMainImg || mainImgURL" alt="Ana resim" class="object-contain h-[14vh] mb-3" />
+              </figure>
             </div>
           </div>
 
@@ -82,6 +86,16 @@
               class="hidden file-input file-input-primary rounded-sm file-input-bordered file-input-sm w-full" />
           </div>
           <div class="col-span-full grid grid-cols-2 overflow-auto gap-3">
+            <div class="card bg-base-100 shadow-xl" *ngFor="let image of existingImages; let i = index">
+              <figure class="!justify-between px-3">
+                <span class="truncate text-sm">{{ image | fileName }}</span>
+                <button class="text-lg w-9 h-9 text-error/80 hover:text-error" (click)="removeImgHandler(i, true)">
+                  <fa-icon [icon]="iconsService.xMark" />
+                </button>
+              </figure>
+              <figure><img [src]="image" [alt]="image | fileName" class="object-contain h-[14vh] mb-3" /></figure>
+            </div>
+
             <div class="card bg-base-100 shadow-xl" *ngFor="let image of images; let i = index">
               <figure class="!justify-between px-3">
                 <span class="truncate text-sm">{{ image.file.name }}</span>
@@ -106,8 +120,12 @@
               <button class="btn btn-primary btn-sm rounded-sm">Seçimi temizle</button>
             </div> -->
             <label class="label cursor-pointer inline-flex items-center" *ngFor="let cat of categories">
-              <input type="checkbox" (change)="checkedChangedHandler(cat.category._id, $event.target.checked)" class="checkbox checkbox-sm mr-1 checkbox-primary" [checked]="cat.checked"/>
-              <span class="label-text">{{cat.category.title}}</span> 
+              <input
+                type="checkbox"
+                (change)="checkedChangedHandler(cat.category._id, $event.target.checked)"
+                class="checkbox checkbox-sm mr-1 checkbox-primary"
+                [checked]="cat.checked" />
+              <span class="label-text">{{ cat.category.title }}</span>
             </label>
           </div>
         </div>

@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
   title: {
+    type: String,
+    required: true,
+  },
+  slug: {
     type: String,
     required: true,
   },
@@ -39,5 +44,19 @@ const productSchema = new Schema({
   ],
 });
 
-const productModel = mongoose.model("Product", productSchema);
+export interface ProductData {
+  title: string;
+  slug: string;
+  desciption: string;
+  stock: number;
+  price: number;
+  unit: string;
+  mainImg: string;
+  images: Array<string>;
+  categories: Array<string | mongoose.Types.ObjectId>;
+}
+export interface ProductDocument extends mongoose.Document, ProductData {}
+
+productSchema.plugin(paginate);
+const productModel = mongoose.model<ProductDocument, mongoose.PaginateModel<ProductDocument>>("Product", productSchema);
 export default productModel;

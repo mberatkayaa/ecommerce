@@ -1,10 +1,8 @@
 <div class="grid grid-cols-4 gap-3 py-3 px-4">
-  <app-admin-product-card/>
-  <app-admin-product-card/>
-  <app-admin-product-card/>
-  <app-admin-product-card/>
-  <app-admin-product-card/>
-  <app-admin-product-card/>
-  <app-admin-product-card/>
-  <app-admin-product-card/>
+  <ng-container *ngIf="isAdmin">
+    <app-admin-product-card *ngFor="let product of products" [product]="product" />
+  </ng-container>
+  <ng-container *ngIf="!isAdmin">
+    <app-product-card *ngFor="let product of products" [product]="product" />
+  </ng-container>
 </div>

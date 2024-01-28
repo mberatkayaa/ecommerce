@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, HostListener, QueryList, ViewChild, ViewChildren } from "@angular/core";
-import { CarouselComponent, OwlOptions } from "ngx-owl-carousel-o";
-import { Product } from "../../shared/models/Product.model";
+import { Component} from "@angular/core";
+import { OwlOptions } from "ngx-owl-carousel-o";
+
 
 @Component({
   selector: "app-home-page",

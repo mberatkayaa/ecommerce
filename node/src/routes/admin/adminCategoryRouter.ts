@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { wrapper } from "../../util/requestHandlerWrapper.js";
 import categoryModel from "../../models/Category.js";
 import { ResultBuilder } from "../../util/ResultBuilder.js";
+import { slugify } from "../../util/slugify.js";
 
 export const adminCategoryRouter = express.Router();
 
@@ -11,6 +12,7 @@ adminCategoryRouter.post("/add", (req, res) => {
   wrapper(async () => {
     const category = new categoryModel({
       title: req.body.title,
+      slug: slugify(req.body.title),
       group: req.body.group,
     });
     const savedCategory = await category.save();
@@ -25,6 +27,7 @@ adminCategoryRouter.patch("/edit", (req, res) => {
       req.body._id,
       {
         title: req.body.title,
+        slug: slugify(req.body.title),
         group: req.body.group,
       },
       { new: true }

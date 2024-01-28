@@ -31,6 +31,9 @@ import { AdminProductsPageComponent } from "./pages/admin-page/admin-products-pa
 import { AdminAddProductPageComponent } from "./pages/admin-page/admin-add-product-page/admin-add-product-page.component";
 import { AdminCategoriesPageComponent } from "./pages/admin-page/admin-categories-page/admin-categories-page.component";
 import { CategoryRowComponent } from "./pages/admin-page/admin-categories-page/category-row.component";
+import { LayoutService } from "./shared/services/layout.service";
+import { LayoutDirective } from './shared/directives/layout.directive';
+import { FileNamePipe } from './shared/pipes/file-name.pipe';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,9 @@ import { CategoryRowComponent } from "./pages/admin-page/admin-categories-page/c
     AdminProductsPageComponent,
     AdminAddProductPageComponent,
     AdminCategoriesPageComponent,
-    CategoryRowComponent
+    CategoryRowComponent,
+    LayoutDirective,
+    FileNamePipe
   ],
   imports: [
     BrowserModule,
@@ -70,6 +75,7 @@ import { CategoryRowComponent } from "./pages/admin-page/admin-categories-page/c
       useClass: AuthInterceptorService,
       multi: true,
     },
+    LayoutService
   ],
   bootstrap: [AppComponent],
 })
