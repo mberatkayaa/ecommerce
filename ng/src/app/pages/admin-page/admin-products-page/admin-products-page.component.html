@@ -11,7 +11,9 @@
     </div>
     <hr />
     <div class="flex items-center">
-      <select class="select select-sm rounded-sm select-primary w-full max-w-xs" (change)="selectedChanged($event.target.value)">
+      <select
+        class="select select-sm rounded-sm select-primary w-full max-w-xs"
+        (change)="selectedChanged($event.target.value)">
         <option disabled [selected]="!queryParams.obj.sort">Sıralama</option>
 
         <option [selected]="queryParams.obj.sort === 'priceAsc'" value="priceAsc">Fiyata Göre (Artan)</option>
@@ -36,14 +38,26 @@
       </div>
       <div class="flex ml-auto items-center">
         <span class="text-sm font-bold mr-8">{{ totalDocs }} Ürün</span>
-        <button class="text-sm font-bold text-primary">Dar</button>
+        <a
+          routerLink="./"
+          [queryParams]="queryParams.set({ wide: false, cold: true })"
+          class="text-sm font-bold"
+          [ngClass]="{ 'text-primary': !queryParams.obj.wide, 'text-primary/50': queryParams.obj.wide }">
+          Dar
+        </a>
         <div class="divider divider-horizontal mx-2"></div>
-        <button class="text-sm font-bold text-primary/50">Geniş</button>
+        <a
+          routerLink="./"
+          [queryParams]="queryParams.set({ wide: true, cold: true })"
+          class="text-sm font-bold"
+          [ngClass]="{ 'text-primary': queryParams.obj.wide, 'text-primary/50': !queryParams.obj.wide }">
+          Geniş
+        </a>
       </div>
     </div>
   </div>
   <div class="overflow-auto border border-cyan-600">
-    <app-products [products]="products" [isAdmin]="true" />
+    <app-products [products]="products" [isAdmin]="true" [wide]="queryParams.obj.wide" />
   </div>
   <div class="mt-auto flex">
     <div class="join px-4">

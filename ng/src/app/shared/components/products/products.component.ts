@@ -6,6 +6,7 @@ import { Component, Input } from "@angular/core";
   styleUrl: "./products.component.css",
 })
 export class ProductsComponent {
-  @Input() isAdmin: boolean;
+  @Input() isAdmin: boolean = false;
   @Input() products;
+  @Input() wide: boolean = false;
 }

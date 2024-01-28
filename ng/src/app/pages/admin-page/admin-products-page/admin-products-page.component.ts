@@ -19,11 +19,13 @@ export class AdminProductsPageComponent implements OnInit {
     limit: number;
     inStock: boolean;
     sort: string;
+    wide: boolean;
   }> = new QueryParams({
     page: 1,
     limit: 10,
     inStock: false,
     sort: null,
+    wide: false,
   });
 
   totalPages: number = 1;
@@ -54,15 +56,17 @@ export class AdminProductsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe({
-      next: (value: { page: string; limit: string; inStock: string; sort: string }) => {
+      next: (value: { page: string; limit: string; inStock: string; sort: string; wide: string; cold: string }) => {
         console.log("query", value);
         this.queryParams.obj.page = +value.page || 1;
         this.queryParams.obj.inStock = value.inStock === "true";
         this.queryParams.obj.sort = value.sort;
+        this.queryParams.obj.wide = value.wide === "true";
 
         let limit = +value.limit || 10;
         if (limit < this.limits[0] || limit > this.limits[this.limits.length - 1]) limit = this.limits[0];
         this.queryParams.obj.limit = limit;
+        if (value.cold) return;
         this.http
           .get<PaginatedHttpResult<Product>>(domain + "products", {
             params: this.queryParams.httpParams(),
