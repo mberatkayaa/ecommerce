@@ -14,11 +14,13 @@ export class LayoutService {
       children: [
         {
           path: "signin",
-          visibility: { navbar: false },
+          // visibility: { navbar: false },
+          visibility: {},
         },
         {
           path: "signup",
-          visibility: { header: false },
+          // visibility: { header: false },
+          visibility: {},
         },
       ],
     },
@@ -33,7 +35,8 @@ export class LayoutService {
   constructor(private router: Router) {
     this.router.events.subscribe({
       next: (value) => {
-        if (value instanceof NavigationStart) {
+        console.log("route event: ", value);
+        if (value instanceof NavigationEnd) {
           console.log("URL in event: ", value.url);
           const visibility = this.findVisibility(this.infos, value.url);
           this.visibility.next(visibility);

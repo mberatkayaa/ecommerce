@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { domain } from "../misc/constants";
-import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { BehaviorSubject, Observable, catchError, concatMap, tap, throwError } from "rxjs";
 import { User } from "../models/User.model";
 import { jwtDecode } from "jwt-decode";
 
@@ -33,6 +33,36 @@ export class AuthService {
     localStorage.removeItem("token");
     this.user.next(null);
     this.clearInterval();
+  }
+  makeDate(): Date; // 1. Bir parametreli
+  makeDate(m: number, d: number, y: number): Date; // 2. Üç parametreli
+  makeDate(mOrTimestamp?: number, d?: number, y?: number): Date {
+    // 3. Üç parametreli
+    if (d !== undefined && y !== undefined) {
+      return new Date(y, mOrTimestamp, d);
+    } else {
+      return new Date(mOrTimestamp);
+    }
+  }
+  isAdmin(): Observable<any>;
+  isAdmin(email: string, password: string): Observable<any>;
+  isAdmin(email?: string, password?: string): Observable<any> {
+    if (!email) {
+      return this.http.get(domain + "admin").pipe(
+        catchError((err) => {
+          return throwError(() => err);
+        })
+      );
+    }
+
+    return this.auth(email, password).pipe(
+      concatMap((val) => {
+        return this.isAdmin();
+      }),
+      catchError((err) => {
+        return throwError(() => err);
+      })
+    );
   }
 
   auth(email: string, password: string, endPoint: "signin" | "signup" = "signin") {
