@@ -36,6 +36,7 @@ import { LayoutDirective } from './shared/directives/layout.directive';
 import { FileNamePipe } from './shared/pipes/file-name.pipe';
 import { NotificationComponent } from './shared/components/notification/notification.component';
 import { NotificationTickDirective } from './shared/directives/notification-tick.directive';
+import { ShopPageComponent } from './pages/shop-page/shop-page.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { NotificationTickDirective } from './shared/directives/notification-tick
     LayoutDirective,
     FileNamePipe,
     NotificationComponent,
-    NotificationTickDirective
+    NotificationTickDirective,
+    ShopPageComponent
   ],
   imports: [
     BrowserModule,

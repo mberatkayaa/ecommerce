@@ -1,0 +1,85 @@
+<div class="grid grid-cols-12 h-auto">
+  <div class="border border-black max-h-screen sticky top-0">
+    Kategoriler
+  </div>
+<div class="col-start-3 col-end-11 min-h-[calc(100vh-14rem)] flex flex-col ">
+  <div class="flex flex-col gap-3 px-4 py-3">
+    <div class="flex items-center">
+      <select
+        class="select select-sm rounded-sm select-primary w-full max-w-xs"
+        (change)="selectedChanged($event.target.value)">
+        <option disabled [selected]="!queryParams.obj.sort">Sıralama</option>
+
+        <option [selected]="queryParams.obj.sort === 'priceAsc'" value="priceAsc">Fiyata Göre (Artan)</option>
+
+        <option [selected]="queryParams.obj.sort === 'priceDesc'" value="priceDesc">Fiyata Göre (Azalan)</option>
+
+        <option [selected]="queryParams.obj.sort === 'titleAsc'" value="titleAsc">Ürün Adına Göre (A > Z)</option>
+
+        <option [selected]="queryParams.obj.sort === 'titleDesc'" value="titleDesc">Ürün Adına Göre (Z > A)</option>
+      </select>
+      <div class="form-control mx-3">
+        <a
+          routerLink="./"
+          [queryParams]="queryParams.set({ inStock: !queryParams.obj.inStock })"
+          class="label cursor-pointer">
+          <input
+            type="checkbox"
+            [checked]="queryParams.obj.inStock"
+            class="checkbox checkbox-sm mr-1 checkbox-primary" />
+          <span class="label-text">Stoktakiler</span>
+        </a>
+      </div>
+      <div class="flex ml-auto items-center">
+        <span class="text-sm font-bold mr-8">{{ totalDocs }} Ürün</span>
+        <a
+          routerLink="./"
+          [queryParams]="queryParams.set({ wide: false, cold: true })"
+          class="text-sm font-bold"
+          [ngClass]="{ 'text-primary': !queryParams.obj.wide, 'text-primary/50': queryParams.obj.wide }">
+          Dar
+        </a>
+        <div class="divider divider-horizontal mx-2"></div>
+        <a
+          routerLink="./"
+          [queryParams]="queryParams.set({ wide: true, cold: true })"
+          class="text-sm font-bold"
+          [ngClass]="{ 'text-primary': queryParams.obj.wide, 'text-primary/50': !queryParams.obj.wide }">
+          Geniş
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="border border-cyan-600">
+    <app-products [products]="products" [isAdmin]="false" [wide]="queryParams.obj.wide" />
+  </div>
+  <div class="mt-auto flex">
+    <div class="join px-4">
+      <ng-container *ngFor="let btn of pageButtons">
+        <a
+          *ngIf="btn !== '...'"
+          class="join-item btn btn-xs"
+          [ngClass]="{ 'btn-active': btn === queryParams.obj.page }"
+          routerLink="./"
+          [queryParams]="queryParams.set({ page: btn })">
+          {{ btn }}
+        </a>
+        <span *ngIf="btn === '...'" class="mx-2">
+          {{ btn }}
+        </span>
+      </ng-container>
+    </div>
+    <div class="join px-4 ml-auto">
+      <span class="text-sm my-auto mr-3">Ürün sayısı:</span>
+      <a
+        *ngFor="let lim of limits"
+        class="join-item btn btn-xs"
+        [ngClass]="{ 'btn-active': lim === queryParams.obj.limit }"
+        routerLink="./"
+        [queryParams]="queryParams.set({ limit: lim })">
+        {{ lim }}
+      </a>
+    </div>
+  </div>
+</div>
+</div>

@@ -9,6 +9,7 @@ import { AdminCategoriesPageComponent } from "./pages/admin-page/admin-categorie
 import { productResolver } from "./shared/resolvers/product.resolver";
 import { adminGuard } from "./shared/guards/admin.guard";
 import { authGuard } from "./shared/guards/auth.guard";
+import { ShopPageComponent } from "./pages/shop-page/shop-page.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
   },
   { path: "signup", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signup" } },
   { path: "signin", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signin" } },
+  { path: "shop", component: ShopPageComponent },
   {
     path: "admin",
     canActivate: [adminGuard],

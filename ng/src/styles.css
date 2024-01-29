@@ -17,10 +17,11 @@
 }
 
 app-root {
-  /* display: block;
-  width: 80vw;
-  height: 100vh;
-  overflow: visible; */
+  /* @apply grid h-screen min-h-0 min-w-0 overflow-hidden w-screen;
+  align-content: start;
+  grid-template-rows: repeat(2, auto) 0;
+  align-items: start;
+  grid-auto-rows: 1fr; */
 }
 
 ::-webkit-scrollbar {

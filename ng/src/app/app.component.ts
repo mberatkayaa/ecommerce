@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { AuthService } from "./shared/services/auth.service";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { LayoutInfo, createLayoutInfos } from "./shared/misc/LayoutInfo";
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   sideNotifications: Array<INotification> = [];
   middleNotifications: Array<INotification> = [];
 
-  constructor(private authService: AuthService, private notificationHandler: NotificationHandlerService) {}
+  constructor(private authService: AuthService, private notificationHandler: NotificationHandlerService, private cd: ChangeDetectorRef) {}
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -36,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
       next: (value) => {
         this.sideNotifications = value.filter((x) => x.position === "side").reverse();
         this.middleNotifications = value.filter((x) => x.position === "middle").reverse();
+        this.cd.detectChanges()
       },
     });
   }
