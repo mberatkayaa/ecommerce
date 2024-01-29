@@ -19,6 +19,14 @@ const routes: Routes = [
   { path: "signup", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signup" } },
   { path: "signin", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signin" } },
   { path: "shop", component: ShopPageComponent },
+  { path: "grp/:grpId", component: ShopPageComponent },
+  { path: "cat/:catSlug", component: ShopPageComponent },
+  {
+    path: "products/edit/:id",
+    component: AdminAddProductPageComponent,
+    data: { edit: true },
+    resolve: { product: productResolver },
+  },
   {
     path: "admin",
     canActivate: [adminGuard],

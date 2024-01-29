@@ -2,52 +2,34 @@
   <div class="grid grid-cols-12 w-full items-stretch">
     <ul class="col-start-3 col-end-11 menu menu-horizontal gap-x-2 p-0 justify-between">
       <li class="b-menu-item-container">
-        <a routerLink="/qwe" class="b-menu-link">Tümü</a>
+        <a routerLink="/shop" class="b-menu-link">Tümü</a>
       </li>
-      <li
-        class="b-menu-item-container"
-        appDropdownToggler
-        togglerShowClassName="menu-dropdown-show"
-        dropdownShowClassName="menu-dropdown-show">
-        <a class="b-menu-toggler" [attr.data-toggler]="'true'">Mouse Pad</a>
-        <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'">
-          <li><a class="b-menu-sub-item">Beam S Serisi</a></li>
-          <li><a class="b-menu-sub-item">Beam XL Serisi</a></li>
-          <li><a class="b-menu-sub-item">Wild Serisi</a></li>
-          <li><a class="b-menu-sub-item">Beam Soft Serisi</a></li>
-        </ul>
-      </li>
-      <li class="b-menu-item-container">
-        <a routerLink="/qwe" class="b-menu-link">Kupa Bardak</a>
-      </li>
-      <li
-        class="b-menu-item-container"
-        appDropdownToggler
-        togglerShowClassName="menu-dropdown-show"
-        dropdownShowClassName="menu-dropdown-show">
-        <a class="b-menu-toggler" [attr.data-toggler]="'true'">Patch & Yama</a>
-        <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'">
-          <li><a class="b-menu-sub-item">Patch</a></li>
-          <li><a class="b-menu-sub-item">Back Patch</a></li>
-        </ul>
-      </li>
-      <li
-        class="b-menu-item-container"
-        appDropdownToggler
-        togglerShowClassName="menu-dropdown-show"
-        dropdownShowClassName="menu-dropdown-show">
-        <a class="b-menu-toggler" [attr.data-toggler]="'true'">Gamer Yastık</a>
-        <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'">
-          <li><a class="b-menu-sub-item">Suni Deri</a></li>
-          <li><a class="b-menu-sub-item">Baskılı</a></li>
-        </ul>
-      </li>
-      <li class="b-menu-item-container">
-        <a routerLink="/qwe" class="b-menu-link">Kulaklık Standı</a>
-      </li>
-      <li class="b-menu-item-container">
-        <a routerLink="/qwe" class="b-menu-link">Ahşat Poster</a>
-      </li>
+      <ng-container *ngIf="groups && groups.length > 0">
+        <li
+          *ngFor="let grp of groups"
+          class="b-menu-item-container"
+          
+          [appDropdownToggler]="grp.categories && grp.categories.length > 0"
+          [togglerShowClassName]="grp.categories && grp.categories.length > 0 ? 'menu-dropdown-show' : null"
+          [dropdownShowClassName]="grp.categories && grp.categories.length > 0 ? 'menu-dropdown-show' : null">
+          <a
+            [ngClass]="{
+              'b-menu-toggler': grp.categories && grp.categories.length > 0,
+              'b-menu-link': !grp.categories || grp.categories.length <= 0
+            }"
+            [attr.data-toggler]="grp.categories && grp.categories.length > 0 ? 'true' : null"
+            [routerLink]="'/grp/' + grp.value">
+            {{ grp.name }}
+          </a>
+          <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'" *ngIf="grp.categories && grp.categories.length > 0">
+            <li *ngFor="let cat of grp.categories">
+              <a class="b-menu-sub-item" [routerLink]="'/cat/' + cat.slug">
+                {{ cat.title }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
     </ul>
   </div>
 </nav>

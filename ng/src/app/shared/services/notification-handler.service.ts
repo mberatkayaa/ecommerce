@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { NavigationError, Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 import { INotification } from "../misc/types";
+import { splitUrl } from "../misc/helpers";
 
 @Injectable({
   providedIn: "root",
@@ -20,10 +21,16 @@ export class NotificationHandlerService {
           console.log("error: ", value);
           const message: string = value.error.result.message;
           this.addNotification({ title: "Hata", description: message, type: "error" });
+          this.redirect();
         }
       },
     });
     this.startTick();
+  }
+
+  redirect() {
+    const { url, queryParams } = splitUrl(this.router.url);
+    this.router.navigate([url], { queryParams });
   }
 
   addNotification(value: INotification): INotification {

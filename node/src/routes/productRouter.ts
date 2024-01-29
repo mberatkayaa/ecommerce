@@ -32,13 +32,53 @@ productRouter.get("/:_id", (req, res, next) => {
 
 productRouter.get("/", (req, res) => {
   wrapper(async () => {
+    let query: FilterQuery<ProductDocument> | undefined = {};
+    let sort: any = {};
+
     const extension: Extension = req.body.__ext;
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
     const inStock = req.query.inStock === "true";
+    let grps: Array<string> = [];
+    let cats: Array<string> = [];
+    let grpLimit: Array<string> = [];
+    let allowedCats: Array<string> = [];
+    let catIds: Array<string> = [];
+    if (req.query.grpLimit) {
+      grpLimit = (<string>req.query.grpLimit).split(",");
+    }
+    if (req.query.grps) {
+      grps = (<string>req.query.grps).split(",");
+    }
+    if (req.query.cats) {
+      cats = (<string>req.query.cats).split(",");
+    }
+    if (grpLimit && grpLimit.length > 0) {
+      allowedCats = (await categoryModel.find({ group: { $in: grpLimit } }, { _id: 1 })).map((x) => x._id.toString());
+      if (grps && grps.length > 0) {
+        grps = grps.filter((x) => grpLimit.findIndex((y) => y === x) >= 0);
+      }
+    }
+    if (cats && cats.length > 0) {
+      catIds = (await categoryModel.find({ slug: { $in: cats } }, { _id: 1 })).map((x) => x._id.toString());
+    }
+    if (allowedCats && allowedCats.length > 0) {
+      catIds = catIds.filter((x) => allowedCats.findIndex((y) => y === x) >= 0);
+    }
 
-    let query: FilterQuery<ProductDocument> | undefined = {};
-    let sort: any = {};
+    if (catIds && catIds.length > 0 && grps && grps.length > 0) {
+      query.$or = [{ groups: { $in: grps } }, { categories: { $in: catIds } }];
+    } else {
+      if (catIds && catIds.length > 0) {
+        query.categories = { $in: catIds };
+      }
+      else if (grps && grps.length > 0) {
+        query.groups = { $in: grps };
+      }
+      else if(grpLimit && grpLimit.length > 0 && allowedCats && allowedCats.length > 0){
+        query.$or = [{ groups: { $in: grpLimit } }, { categories: { $in: allowedCats } }];
+      }
+    }
 
     if (inStock) query.stock = { $gt: 0 };
     switch (req.query.sort) {

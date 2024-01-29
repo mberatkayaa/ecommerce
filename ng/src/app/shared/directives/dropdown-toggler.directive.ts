@@ -4,8 +4,7 @@ import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from "@
   selector: "[appDropdownToggler]",
 })
 export class DropdownTogglerDirective {
-  @Input("appDropdownToggler") dropdown: HTMLElement;
-  @Input() toggler: HTMLElement;
+  @Input("appDropdownToggler") active: boolean = true;
   @Input() togglerShowClassName: string = "";
   @Input() dropdownShowClassName: string = "";
 
@@ -13,6 +12,7 @@ export class DropdownTogglerDirective {
 
   @HostListener("mouseenter")
   mouseEnter(event) {
+    if (!this.active) return;
     this.renderer.addClass(
       this.elementRef.nativeElement.querySelector("[data-toggler='true']")!,
       this.togglerShowClassName
@@ -21,13 +21,11 @@ export class DropdownTogglerDirective {
       this.elementRef.nativeElement.querySelector("[data-dropdown='true']")!,
       this.dropdownShowClassName
     );
-    // if (!this.dropdown || !this.toggler) return;
-    // this.renderer.addClass(this.toggler, this.togglerShowClassName);
-    // this.renderer.addClass(this.dropdown, this.dropdownShowClassName);
   }
 
   @HostListener("mouseleave")
   mouseLeave(event) {
+    if (!this.active) return;
     this.renderer.removeClass(
       this.elementRef.nativeElement.querySelector("[data-toggler='true']")!,
       this.togglerShowClassName
@@ -36,8 +34,5 @@ export class DropdownTogglerDirective {
       this.elementRef.nativeElement.querySelector("[data-dropdown='true']")!,
       this.dropdownShowClassName
     );
-    // if (!this.dropdown || !this.toggler) return;
-    // this.renderer.removeClass(this.toggler, this.togglerShowClassName);
-    // this.renderer.removeClass(this.dropdown, this.dropdownShowClassName);
   }
 }

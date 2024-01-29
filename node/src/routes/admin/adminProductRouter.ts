@@ -38,13 +38,18 @@ adminProductRouter.post("/add", productImageHandler(), (req, res) => {
     }
     //#endregion
     //#region Product oluştur.
+    let groups: Array<string> = [];
+    if (req.body.groups) groups = JSON.parse(req.body.groups);
+
     let categories: Array<mongoose.Types.ObjectId> = [];
-    if (req.body.categories) req.body.categories = JSON.parse(req.body.categories);
-    if (req.body.categories && Array.isArray(req.body.categories) && req.body.categories.length > 0) {
-      categories = req.body.categories.map((id: string) => {
-        const result = new mongoose.Types.ObjectId(id);
-        return result;
-      });
+    if (groups.length <= 0) {
+      if (req.body.categories) req.body.categories = JSON.parse(req.body.categories);
+      if (req.body.categories && Array.isArray(req.body.categories) && req.body.categories.length > 0) {
+        categories = req.body.categories.map((id: string) => {
+          const result = new mongoose.Types.ObjectId(id);
+          return result;
+        });
+      }
     }
     const product = new productModel({
       title: req.body.title,
@@ -54,6 +59,7 @@ adminProductRouter.post("/add", productImageHandler(), (req, res) => {
       price: +req.body.price,
       unit: req.body.unit,
       categories: categories,
+      groups: groups,
       mainImg: mainImgUrl,
       images: imageUrls,
     });
@@ -159,6 +165,10 @@ adminProductRouter.patch("/edit/:_id", productImageHandler(), (req, res) => {
     if (!oldProduct) {
       return res.status(404).json(new ResultBuilder().error("Belirtilen ürün bulunamadı!").result);
     }
+
+    let groups: Array<string> = [];
+    if (req.body.groups) groups = JSON.parse(req.body.groups);
+
     //#region Eski kategorileri üründen sil, yeni kategorileri diziye at.
     let categories: Array<mongoose.Types.ObjectId> = [];
     if (req.body.categories) req.body.categories = JSON.parse(req.body.categories);
@@ -170,11 +180,15 @@ adminProductRouter.patch("/edit/:_id", productImageHandler(), (req, res) => {
     }
     if (oldProduct.categories && oldProduct.categories.length > 0) {
       // Artık üründe bulunmayacak olan kategorileri bul.
-      const categoriesToDelete = oldProduct.categories.filter(
-        (x) => categories.findIndex((y) => y.toString() === x.toString()) < 0
-      );
+      const categoriesToDelete =
+        groups.length > 0
+          ? oldProduct.categories
+          : oldProduct.categories.filter((x) => categories.findIndex((y) => y.toString() === x.toString()) < 0);
       // Yeni eklenecek kategorileri bul.
-      categories = categories.filter((x) => oldProduct.categories.findIndex((y) => y.toString() === x.toString()) < 0);
+      categories =
+        groups.length > 0
+          ? []
+          : categories.filter((x) => oldProduct.categories.findIndex((y) => y.toString() === x.toString()) < 0);
 
       // // Artık üründe bulunmayacak olan kategorileri sil.
       // await productModel.findByIdAndUpdate(req.params.id, {

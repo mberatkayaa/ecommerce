@@ -42,6 +42,7 @@ const productSchema = new Schema({
       ref: "Category",
     },
   ],
+  groups: [String],
 });
 
 export interface ProductData {
@@ -54,6 +55,7 @@ export interface ProductData {
   mainImg: string;
   images: Array<string>;
   categories: Array<string | mongoose.Types.ObjectId>;
+  groups: Array<string>;
 }
 export interface ProductDocument extends mongoose.Document, ProductData {}
 

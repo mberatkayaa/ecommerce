@@ -20,6 +20,11 @@ export class QueryParams<T extends { [key: string]: string | number | boolean }>
     return result;
   }
 
+  setPermanentReturnSelf(values?: { [key: string]: any }){
+    this.setPermanent(values);
+    return this;
+  }
+
   setPermanent(values?: { [key: string]: any }) {
     if (values) {
       this.obj = { ...this.obj, ...values };

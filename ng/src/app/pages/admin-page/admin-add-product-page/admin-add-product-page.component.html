@@ -72,7 +72,7 @@
                 </button>
               </figure>
               <figure>
-                <img [src]="existingMainImg || mainImgURL" alt="Ana resim" class="object-contain h-[14vh] mb-3" />
+                <img [src]="existingMainImg || mainImgURL" alt="Ana resim" class="object-cover h-[14vh] mb-3" />
               </figure>
             </div>
           </div>
@@ -101,7 +101,7 @@
                   <fa-icon [icon]="iconsService.xMark" />
                 </button>
               </figure>
-              <figure><img [src]="image" [alt]="image | fileName" class="object-contain h-[14vh] mb-3" /></figure>
+              <figure><img [src]="image" [alt]="image | fileName" class="object-cover h-[14vh] mb-3" /></figure>
             </div>
 
             <div class="card bg-base-100 shadow-xl" *ngFor="let image of images; let i = index">
@@ -111,7 +111,7 @@
                   <fa-icon [icon]="iconsService.xMark" />
                 </button>
               </figure>
-              <figure><img [src]="image.url" [alt]="image.file.name" class="object-contain h-[14vh] mb-3" /></figure>
+              <figure><img [src]="image.url" [alt]="image.file.name" class="object-cover h-[14vh] mb-3" /></figure>
             </div>
           </div>
         </div>
@@ -180,7 +180,7 @@
             <fa-icon [icon]="iconsService.xMark" />
           </button>
         </figure>
-        <figure><img [src]="mainImgURL" alt="Ana resim" class="object-contain h-[14vh] mb-3" /></figure>
+        <figure><img [src]="mainImgURL" alt="Ana resim" class="object-cover h-[14vh] mb-3" /></figure>
       </div>
     </div>
 
@@ -208,7 +208,7 @@
             <fa-icon [icon]="iconsService.xMark" />
           </button>
         </figure>
-        <figure><img [src]="image.url" [alt]="image.file.name" class="object-contain h-[14vh] mb-3" /></figure>
+        <figure><img [src]="image.url" [alt]="image.file.name" class="object-cover h-[14vh] mb-3" /></figure>
       </div>
     </div>
   </div> -->
