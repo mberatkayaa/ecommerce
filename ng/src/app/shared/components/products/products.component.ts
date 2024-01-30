@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
   selector: "app-products",
@@ -9,4 +9,5 @@ export class ProductsComponent {
   @Input() isAdmin: boolean = false;
   @Input() products;
   @Input() wide: boolean = false;
+  @Output() onDelete = new EventEmitter<string>();
 }

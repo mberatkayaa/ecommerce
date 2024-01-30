@@ -1,6 +1,7 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Product } from "../../../models/Product.model";
 import { IconsService } from "../../../services/icons.service";
+import { ProductService } from "../../../services/product.service";
 
 @Component({
   selector: "app-admin-product-card",
@@ -31,5 +32,13 @@ export class AdminProductCardComponent {
     mainImg: "https://picsum.photos/200/300",
   };
 
+  @Output() onDelete = new EventEmitter<string>();
+
   constructor(protected iconsService: IconsService) {}
+
+  deleteHandler() {
+    if (confirm("Ürünü silmek istediğinizden emin misiniz?")) {
+      this.onDelete.emit(this.product._id);
+    }
+  }
 }

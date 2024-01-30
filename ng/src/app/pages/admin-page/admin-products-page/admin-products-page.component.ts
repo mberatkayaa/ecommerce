@@ -125,4 +125,15 @@ export class AdminProductsPageComponent implements OnInit {
   selectedChanged(value) {
     this.router.navigate(["./"], { relativeTo: this.route, queryParams: this.queryParams.set({ sort: value }) });
   }
+
+  deleteHandler(id) {
+    this.productService.delete(id).subscribe({
+      next: (value) => {
+        if (value.result.ok) {
+          const index = this.products.findIndex((x) => x._id === id);
+          if (index >= 0) this.products.splice(index, 1);
+        }
+      },
+    });
+  }
 }

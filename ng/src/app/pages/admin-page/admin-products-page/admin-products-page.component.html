@@ -57,7 +57,7 @@
     </div>
   </div>
   <div class="overflow-auto border border-cyan-600">
-    <app-products [products]="products" [isAdmin]="true" [wide]="queryParams.obj.wide" />
+    <app-products [products]="products" [isAdmin]="true" (onDelete)="deleteHandler($event)" [wide]="queryParams.obj.wide" />
   </div>
   <div class="mt-auto flex">
     <div class="join px-4">

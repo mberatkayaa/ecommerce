@@ -10,6 +10,7 @@
         <fa-icon [icon]="iconsService.edit" />
       </a>
       <button
+        (click)="deleteHandler()"
         title="Sil"
         class="bg-error text-error-content hover:bg-error/80 rounded-full h-7 w-7 text-base flex items-center justify-center">
         <fa-icon [icon]="iconsService.delete" />

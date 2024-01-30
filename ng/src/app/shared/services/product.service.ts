@@ -43,6 +43,15 @@ export class ProductService {
     );
   }
 
+  delete(id: string) {
+    return notifier(
+      this.http
+        .delete<HttpResult<any>>(`${domain}admin/products/delete/${id}`)
+        .pipe(httpErr("Ürün silinirken bir hata oluştu!")),
+      true
+    );
+  }
+
   getProducts(params: HttpParams) {
     return notifier(
       this.http
