@@ -1,0 +1,47 @@
+<div class="grid grid-cols-12 h-auto">
+  <div
+    *ngIf="cart.totalItemCount > 0"
+    class="col-start-3 col-end-11 min-h-[calc(100vh-14rem)] grid grid-cols-3 border border-black">
+    <div class="border border-cyan-800 col-span-2 p-2">
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <h1 class="text-primary text-3xl font-semibold">Sepet</h1>
+          <button class="btn btn-error" (click)="clearHandler()">Tümünü kaldır</button>
+        </div>
+        <hr />
+        <div
+          class="bg-base-300 rounded-md gap-3 items-center flex shadow p-2"
+          *ngFor="let item of cart.items; let i = index">
+          <img class="max-w-16 max-h-16 object-cover" [src]="item.product.mainImg" />
+          <a [routerLink]="'/prod/' + item.product.slug" class="truncate text-sm">{{ item.product.title }}</a>
+          <span class="text-nowrap ml-auto font-semibold">x{{ item.quantity }}</span>
+          <span class="text-nowrap font-bold">₺{{ item.totalPrice.toFixed(2)  }}</span>
+          <button class="btn btn-error btn-sm" (click)="removeCartItem(i)">Kaldır</button>
+        </div>
+      </div>
+    </div>
+    <div class="p-2">
+      <div class="p-2 bg-base-300 rounded-md shadow-md sticky top-3">
+        <div class="text-lg font-bold flex justify-between">
+          <span>Sepet Toplamı</span>
+          <span class="text-primary">₺{{ cart.totalPrice.toFixed(2)  }}</span>
+        </div>
+        <button class="btn btn-success btn-md w-full mt-3 rounded-md">Siparişi Tamamla</button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="col-start-3 col-end-11 min-h-[calc(100vh-14rem)] flex flex-col items-center gap-3"
+    *ngIf="cart.totalItemCount <= 0">
+    <div class="mt-5">
+      <div class="inline-block relative">
+        <fa-icon class="text-7xl text-error" [icon]="iconsService.cartShopping"></fa-icon>
+        <fa-icon
+          class="text-2xl text-error-content/50 absolute top-1/3 left-[56.75%] transform -translate-x-1/2 -translate-y-1/2"
+          [icon]="iconsService.faceFrown"></fa-icon>
+      </div>
+    </div>
+    <span class="text-2xl font-bold text-error">Sepetinizde ürün bulunmamaktadır.</span>
+  </div>
+</div>

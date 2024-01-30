@@ -5,6 +5,7 @@ import {
   faCartShopping,
   faCircleCheck,
   faCircleXmark,
+  faFaceFrown,
   faHeart,
   faImage,
   faLayerGroup,
@@ -31,4 +32,5 @@ export class IconsService {
   stock = faBoxesStacked;
   image = faImage;
   check = faCircleCheck;
+  faceFrown = faFaceFrown
 }

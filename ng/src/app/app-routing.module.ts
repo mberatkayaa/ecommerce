@@ -11,6 +11,8 @@ import { adminGuard } from "./shared/guards/admin.guard";
 import { authGuard } from "./shared/guards/auth.guard";
 import { ShopPageComponent } from "./pages/shop-page/shop-page.component";
 import { ProductDetailPageComponent } from "./pages/product-detail-page/product-detail-page.component";
+import { CartPageComponent } from "./pages/cart-page/cart-page.component";
+import { cartResolver } from "./shared/resolvers/cart.resolver";
 
 const routes: Routes = [
   {
@@ -27,6 +29,11 @@ const routes: Routes = [
     component: ProductDetailPageComponent,
     data: { bySlug: true },
     resolve: { product: productResolver },
+  },
+  {
+    path: "cart",
+    component: CartPageComponent,
+    resolve: { cart: cartResolver },
   },
   {
     path: "admin",

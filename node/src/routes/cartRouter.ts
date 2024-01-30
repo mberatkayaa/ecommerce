@@ -30,7 +30,13 @@ cartRouter.get("/", (req, res, next) => {
   wrapper(async () => {
     const extension: Extension = req.body.__ext;
 
-    return res.status(200).json(new ResultBuilder().ok().body(extension.auth!.user!.cart).result);
+    const cart = extension.auth?.user?.cart.toObject().map((x: any) => {
+      x.product.mainImg = extension.host + x.product.mainImg;
+      x.product.images = x.product.images.map((y: any) => extension.host + y);
+      return x;
+    });
+
+    return res.status(200).json(new ResultBuilder().ok().body(cart).result);
   }, res);
 });
 
@@ -39,7 +45,7 @@ cartRouter.post("/", (req, res) => {
     const extension: Extension = req.body.__ext;
 
     const item: ProductDocument = req.body.item;
-    const quantity: number = req.body.quantity || 1;
+    const quantity: number = req.body.quantity;
 
     if (!item) {
       return res.status(404).json(new ResultBuilder().error("Ürün bulunamadı!").body(extension.auth?.user?.cart));
@@ -72,7 +78,31 @@ cartRouter.post("/", (req, res) => {
     } else {
       cart.push({ product: product._id, quantity: quantity < 0 ? 0 : quantity });
     }
-    cart = cart.filter((x) => x.quantity >= 0);
+    cart = cart.filter((x) => x.quantity > 0);
+    const newUser = await userModel
+      .findByIdAndUpdate(user._id, { cart: cart }, { new: true })
+      .populate("cart.product")
+      .exec();
+    const newUserCart = newUser?.cart.toObject();
+
+    newUserCart.forEach((x: any) => {
+      x.product.mainImg = extension.host + x.product.mainImg;
+      x.product.images = x.product.images.map((y: any) => extension.host + y);
+    });
+
+    extension.auth!.user = newUser;
+
+    // await productModel.updateOne({ _id: product._id }, { $inc: { stock: -quantity } }); // Siparişte bu işlem yapılacak.
+    return res.status(200).json(new ResultBuilder().ok().body(newUserCart).result);
+  }, res);
+});
+
+cartRouter.delete("/clear", (req, res) => {
+  wrapper(async () => {
+    const extension: Extension = req.body.__ext;
+    const user = extension.auth?.user!;
+    let cart: Array<{ product: mongoose.Types.ObjectId; quantity: number }> = [];
+
     const newUser = await userModel
       .findByIdAndUpdate(user._id, { cart: cart }, { new: true })
       .populate("cart.product")

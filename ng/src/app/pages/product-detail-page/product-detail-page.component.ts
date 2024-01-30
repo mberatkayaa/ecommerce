@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
 import { Product } from "../../shared/models/Product.model";
+import { CartService } from "../../shared/services/cart.service";
 
 @Component({
   selector: "app-product-detail-page",
@@ -17,7 +18,7 @@ export class ProductDetailPageComponent implements OnInit {
     if (this.quantity < 1) this.quantity = 1;
   }
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.route.data.subscribe({
@@ -25,5 +26,9 @@ export class ProductDetailPageComponent implements OnInit {
         this.product = data.product;
       },
     });
+  }
+
+  toCartHandler() {
+    this.cartService.toCart(this.product, this.quantity).subscribe();
   }
 }

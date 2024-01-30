@@ -58,6 +58,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   removeCartItem(i: number) {
     const item = this.cart.items[i];
-    this.cartService.toCart(item.product, 0, true);
+    this.cartService.toCart(item.product, 0, true).subscribe();
   }
 }

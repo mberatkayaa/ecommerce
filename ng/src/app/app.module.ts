@@ -38,6 +38,7 @@ import { NotificationComponent } from './shared/components/notification/notifica
 import { NotificationTickDirective } from './shared/directives/notification-tick.directive';
 import { ShopPageComponent } from './pages/shop-page/shop-page.component';
 import { ProductDetailPageComponent } from './pages/product-detail-page/product-detail-page.component';
+import { CartPageComponent } from './pages/cart-page/cart-page.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ProductDetailPageComponent } from './pages/product-detail-page/product-
     NotificationComponent,
     NotificationTickDirective,
     ShopPageComponent,
-    ProductDetailPageComponent
+    ProductDetailPageComponent,
+    CartPageComponent
   ],
   imports: [
     BrowserModule,

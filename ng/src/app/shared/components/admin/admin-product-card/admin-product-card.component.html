@@ -22,7 +22,7 @@
         <fa-icon [icon]="iconsService.price" />
         Fiyat:
       </span>
-      <span class="ml-auto">₺{{ product.price }}</span>
+      <span class="ml-auto">₺{{ product.price.toFixed(2) }}</span>
       <hr class="col-span-2 my-2" />
       <span>
         <fa-icon [icon]="iconsService.stock" />
