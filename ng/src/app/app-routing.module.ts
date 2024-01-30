@@ -10,6 +10,7 @@ import { productResolver } from "./shared/resolvers/product.resolver";
 import { adminGuard } from "./shared/guards/admin.guard";
 import { authGuard } from "./shared/guards/auth.guard";
 import { ShopPageComponent } from "./pages/shop-page/shop-page.component";
+import { ProductDetailPageComponent } from "./pages/product-detail-page/product-detail-page.component";
 
 const routes: Routes = [
   {
@@ -22,9 +23,9 @@ const routes: Routes = [
   { path: "grp/:grpId", component: ShopPageComponent },
   { path: "cat/:catSlug", component: ShopPageComponent },
   {
-    path: "products/edit/:id",
-    component: AdminAddProductPageComponent,
-    data: { edit: true },
+    path: "prod/:id",
+    component: ProductDetailPageComponent,
+    data: { bySlug: true },
     resolve: { product: productResolver },
   },
   {

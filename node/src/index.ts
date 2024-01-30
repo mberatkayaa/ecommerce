@@ -15,6 +15,7 @@ import { decodeToken, verifyToken } from "./util/token.js";
 import userModel from "./models/User.js";
 import { Extension } from "./util/ExtendedRequest.js";
 import { groupRouter } from "./routes/groupRouter.js";
+import { cartRouter } from "./routes/cartRouter.js";
 
 dotenv.config();
 
@@ -42,8 +43,9 @@ app.use("/", async (req, res, next) => {
         req.body.__ext.auth.decoded = true;
         const user = await userModel
           .findOne({ email: decoded.email, _id: decoded._id })
-          .populate("cart.items.productId")
+          .populate("cart.product")
           .exec();
+          
         req.body.__ext.auth.user = user;
       }
     }
@@ -57,6 +59,7 @@ app.use("/admin", adminRouter);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
 app.use("/groups", groupRouter);
+app.use("/cart", cartRouter);
 
 app.get("/deneme4/:categoryIds", async (req, res) => {
   try {

@@ -2,17 +2,17 @@
   <div class="grid grid-cols-12 w-full items-stretch">
     <ul class="col-start-3 col-end-11 menu menu-horizontal gap-x-2 p-0 justify-between">
       <li class="b-menu-item-container">
-        <a routerLink="/shop" class="b-menu-link">Tümü</a>
+        <a routerLink="/shop" routerLinkActive="active" class="b-menu-link">Tümü</a>
       </li>
       <ng-container *ngIf="groups && groups.length > 0">
         <li
           *ngFor="let grp of groups"
           class="b-menu-item-container"
-          
           [appDropdownToggler]="grp.categories && grp.categories.length > 0"
           [togglerShowClassName]="grp.categories && grp.categories.length > 0 ? 'menu-dropdown-show' : null"
           [dropdownShowClassName]="grp.categories && grp.categories.length > 0 ? 'menu-dropdown-show' : null">
           <a
+            routerLinkActive="active"
             [ngClass]="{
               'b-menu-toggler': grp.categories && grp.categories.length > 0,
               'b-menu-link': !grp.categories || grp.categories.length <= 0

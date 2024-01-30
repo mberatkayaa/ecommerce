@@ -16,7 +16,13 @@ export const productRouter = express.Router();
 productRouter.get("/:_id", (req, res, next) => {
   wrapper(async () => {
     const extension: Extension = req.body.__ext;
-    const result = await productModel.findById(req.params._id).populate("categories").exec();
+
+    let result;
+    if (req.query.bySlug === "true") {
+      result = await productModel.findOne({ slug: req.params._id }).populate("categories").exec();
+    } else {
+      result = await productModel.findById(req.params._id).populate("categories").exec();
+    }
     if (!result) return res.status(404).json(new ResultBuilder().error("İlgili ürün bulunamadı!").result);
     if (result) {
       if (result.mainImg) {
@@ -53,10 +59,14 @@ productRouter.get("/", (req, res) => {
     if (req.query.cats) {
       cats = (<string>req.query.cats).split(",");
     }
+
     if (grpLimit && grpLimit.length > 0) {
       allowedCats = (await categoryModel.find({ group: { $in: grpLimit } }, { _id: 1 })).map((x) => x._id.toString());
+      catIds = allowedCats;
       if (grps && grps.length > 0) {
         grps = grps.filter((x) => grpLimit.findIndex((y) => y === x) >= 0);
+      } else {
+        grps = grpLimit;
       }
     }
     if (cats && cats.length > 0) {
@@ -71,13 +81,15 @@ productRouter.get("/", (req, res) => {
     } else {
       if (catIds && catIds.length > 0) {
         query.categories = { $in: catIds };
-      }
-      else if (grps && grps.length > 0) {
+      } else if (grps && grps.length > 0) {
         query.groups = { $in: grps };
       }
-      else if(grpLimit && grpLimit.length > 0 && allowedCats && allowedCats.length > 0){
-        query.$or = [{ groups: { $in: grpLimit } }, { categories: { $in: allowedCats } }];
-      }
+      // else if(grpLimit && grpLimit.length > 0){
+      //   query.groups = { $in: grpLimit };
+      //   if(allowedCats && allowedCats.length > 0){
+      //     query.$or = [{ groups: { $in: grpLimit } }, { categories: { $in: allowedCats } }];
+      //   }
+      // }
     }
 
     if (inStock) query.stock = { $gt: 0 };

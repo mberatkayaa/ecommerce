@@ -1,6 +1,8 @@
 <header class="grid grid-cols-12 py-12 h-36">
   <div class="col-start-2 col-span-2">
-    <a routerLink="/products/edit/65b545d5b5631329e21f99d4" class="btn btn-ghost text-primary m-0 h-auto text-3xl font-bold rounded-none">
+    <a
+      routerLink="/products/edit/65b545d5b5631329e21f99d4"
+      class="btn btn-ghost text-primary m-0 h-auto text-3xl font-bold rounded-none">
       <fa-icon [icon]="iconsService.store" />
       TakeStore
     </a>
@@ -21,7 +23,10 @@
         <a *ngIf="!user" [routerLink]="'/signin'" class="font-semibold opacity-75 hover:opacity-100 text-sm">
           {{ "ÜYE GİRİŞİ" }}
         </a>
-        <span *ngIf="user" [title]="user.email" class="font-semibold opacity-75 hover:opacity-100 text-sm w-20 truncate">
+        <span
+          *ngIf="user"
+          [title]="user.email"
+          class="font-semibold opacity-75 hover:opacity-100 text-sm w-20 truncate">
           {{ user.email }}
         </span>
         <a
@@ -32,21 +37,33 @@
         </a>
       </div>
     </div>
-    <a routerLink="/qwe" class="flex group gap-x-2">
-      <div class="indicator">
-        <span class="indicator-item badge badge-primary w-6 h-6 text-xs right-2">9</span>
-        <fa-icon
-          class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
-          [icon]="iconsService.cartShopping" />
+    <div class="relative group">
+      <a routerLink="/qwe" class="flex group gap-x-2">
+        <div class="indicator">
+          <span class="indicator-item badge badge-primary w-6 h-6 text-xs right-2" *ngIf="cart.totalItemCount > 0">
+            {{ cart.totalItemCount > 10 ? "9+" : cart.totalItemCount }}
+          </span>
+          <fa-icon
+            class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
+            [icon]="iconsService.cartShopping" />
+        </div>
+        <div class="text-base-content group-hover:text-primary flex flex-col">
+          <span class="font-semibold opacity-75 group-hover:opacity-100 text-sm truncate min-w-0 flex-1">SEPETİM</span>
+          <span class="mt-auto mb-2 font-normal opacity-75 group-hover:opacity-100 text-xs">
+            {{ cart.totalItemCount > 0 ? "₺" + cart.totalPrice : "Sepet boş" }}
+          </span>
+        </div>
+      </a>
+      <div class="bg-base-100 shadow-md w-96 absolute hidden group-hover:flex top-full right-0 p-3 z-40">
+        <div class="max-h-60 flex flex-col gap-4 max-w-full overflow-auto" *ngIf="cart.totalItemCount > 0">
+          <div class="gap-3 items-center flex shadow p-2" *ngFor="let item of cart.items;let i = index">
+            <img class="max-w-16 max-h-16 object-cover" [src]="item.product.mainImg" />
+            <a [routerLink]="'/prod/'+item.product.slug" class="truncate text-sm">{{ item.product.title }}</a>
+            <span class="text-nowrap ml-auto font-semibold">x{{ item.quantity }}</span>
+            <button class="btn btn-error btn-sm" (click)="removeCartItem(i)">Kaldır</button>
+          </div>
+        </div>
       </div>
-      <div class="text-base-content group-hover:text-primary flex flex-col">
-        <span
-          routerLink="/qwe"
-          class="font-semibold opacity-75 group-hover:opacity-100 text-sm truncate min-w-0 flex-1">
-          SEPETİM
-        </span>
-        <span routerLink="/qwe" class="mt-auto mb-2 font-normal opacity-75 group-hover:opacity-100 text-xs">₺100</span>
-      </div>
-    </a>
+    </div>
   </div>
 </header>

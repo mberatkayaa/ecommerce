@@ -9,7 +9,7 @@ export const productResolver: ResolveFn<Product> = async (
   state: RouterStateSnapshot
 ) => {
   const productService = inject(ProductService);
-  const result = await lastValueFrom(productService.getProduct(route.params.id));
+  const result = await lastValueFrom(productService.getProduct(route.params.id, route.data.bySlug));
   if (result.status.error) {
     throw new Error(result.result.message);
   }

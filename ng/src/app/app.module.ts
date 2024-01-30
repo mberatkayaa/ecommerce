@@ -37,7 +37,7 @@ import { FileNamePipe } from './shared/pipes/file-name.pipe';
 import { NotificationComponent } from './shared/components/notification/notification.component';
 import { NotificationTickDirective } from './shared/directives/notification-tick.directive';
 import { ShopPageComponent } from './pages/shop-page/shop-page.component';
-import { ShopComponent } from './shop/shop.component';
+import { ProductDetailPageComponent } from './pages/product-detail-page/product-detail-page.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +63,7 @@ import { ShopComponent } from './shop/shop.component';
     NotificationComponent,
     NotificationTickDirective,
     ShopPageComponent,
-    ShopComponent
+    ProductDetailPageComponent
   ],
   imports: [
     BrowserModule,

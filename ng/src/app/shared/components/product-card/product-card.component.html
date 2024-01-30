@@ -1,4 +1,4 @@
-<a routerLink="/prod" class="flex flex-col gap-2 group shadow hover:shadow-primary p-2 rounded">
+<a [routerLink]="'/prod/'+product.slug" class="flex flex-col gap-2 group shadow hover:shadow-primary p-2 rounded">
   <button
     class="ml-auto hidden"
     [ngClass]="{

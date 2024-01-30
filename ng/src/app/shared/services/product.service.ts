@@ -12,9 +12,15 @@ import { httpErr, notifier } from "../misc/rxjsOperators";
 export class ProductService {
   constructor(private http: HttpClient) {}
 
-  getProduct(id: string) {
+  getProduct(id: string, bySlug: boolean = false) {
     return notifier(
-      this.http.get<HttpResult<Product>>(domain + "products/" + id).pipe(httpErr("Ürün okunurken bir hata oluştu!")),
+      this.http
+        .get<HttpResult<Product>>(domain + "products/" + id, {
+          params: {
+            bySlug: bySlug || null,
+          },
+        })
+        .pipe(httpErr("Ürün okunurken bir hata oluştu!")),
       true
     );
   }

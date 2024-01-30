@@ -8,6 +8,8 @@ import { NotificationHandlerService } from "./shared/services/notification-handl
 import { INotification } from "./shared/misc/types";
 import Swal from "sweetalert2";
 import { Subscription } from "rxjs";
+import { CartService } from "./shared/services/cart.service";
+import { Cart } from "./shared/models/Cart";
 
 @Component({
   selector: "app-root",
@@ -15,7 +17,6 @@ import { Subscription } from "rxjs";
   styleUrl: "./app.component.css",
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private activeLoadingNotification?: INotification;
   private subscription: Subscription;
 
   sideNotifications: Array<INotification> = [];
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private notificationHandler: NotificationHandlerService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -36,6 +37,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.checkStoredToken();
 
+    
+
     this.subscription = this.notificationHandler.notifications.subscribe({
       next: (value) => {
         this.sideNotifications = value.filter((x) => x.position === "side").reverse();
@@ -43,9 +46,5 @@ export class AppComponent implements OnInit, OnDestroy {
         this.cd.detectChanges();
       },
     });
-  }
-
-  swalDidOpenHandler() {
-    Swal.showLoading();
   }
 }
