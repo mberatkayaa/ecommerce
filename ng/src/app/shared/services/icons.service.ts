@@ -1,11 +1,14 @@
 import {
   faBarcode,
+  faBars,
   faBoxesStacked,
   faCar,
   faCartShopping,
   faCircleCheck,
   faCircleXmark,
   faFaceFrown,
+  faFilter,
+  faGear,
   faHeart,
   faImage,
   faLayerGroup,
@@ -32,5 +35,8 @@ export class IconsService {
   stock = faBoxesStacked;
   image = faImage;
   check = faCircleCheck;
-  faceFrown = faFaceFrown
+  faceFrown = faFaceFrown;
+  bars = faBars;
+  filter = faFilter;
+  gear = faGear;
 }

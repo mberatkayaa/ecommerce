@@ -151,7 +151,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
                   let limit = +value.limit || 10;
                   if (limit < this.limits[0] || limit > this.limits[this.limits.length - 1]) limit = this.limits[0];
                   this.queryParams.obj.limit = limit;
-                  if (value.cold) return;
+                  if (value.cold && this.products && this.products.length > 0) return;
 
                   this.getProducts();
                 },

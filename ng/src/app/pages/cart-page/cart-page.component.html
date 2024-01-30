@@ -1,8 +1,9 @@
 <div class="grid grid-cols-12 h-auto">
   <div
     *ngIf="cart.totalItemCount > 0"
-    class="col-start-3 col-end-11 min-h-[calc(100vh-14rem)] grid grid-cols-3 border border-black">
-    <div class="border border-cyan-800 col-span-2 p-2">
+    class="max-2xl:col-start-1 max-2xl:col-end-13 2xl:col-start-3 2xl:col-end-11 grid grid-cols-3 border border-black">
+    <!-- Sepetteki ürünler -->
+    <div class="max-md:col-span-full max-md:row-start-2 border border-cyan-800 col-span-2 p-2">
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
           <h1 class="text-primary text-3xl font-semibold">Sepet</h1>
@@ -15,24 +16,25 @@
           <img class="max-w-16 max-h-16 object-cover" [src]="item.product.mainImg" />
           <a [routerLink]="'/prod/' + item.product.slug" class="truncate text-sm">{{ item.product.title }}</a>
           <span class="text-nowrap ml-auto font-semibold">x{{ item.quantity }}</span>
-          <span class="text-nowrap font-bold">₺{{ item.totalPrice.toFixed(2)  }}</span>
+          <span class="text-nowrap font-bold">₺{{ item.totalPrice.toFixed(2) }}</span>
           <button class="btn btn-error btn-sm" (click)="removeCartItem(i)">Kaldır</button>
         </div>
       </div>
     </div>
-    <div class="p-2">
+    <!-- Sipariş -->
+    <div class="max-md:col-span-full p-2">
       <div class="p-2 bg-base-300 rounded-md shadow-md sticky top-3">
         <div class="text-lg font-bold flex justify-between">
           <span>Sepet Toplamı</span>
-          <span class="text-primary">₺{{ cart.totalPrice.toFixed(2)  }}</span>
+          <span class="text-primary">₺{{ cart.totalPrice.toFixed(2) }}</span>
         </div>
         <button class="btn btn-success btn-md w-full mt-3 rounded-md">Siparişi Tamamla</button>
       </div>
     </div>
   </div>
-
+  <!-- Ürün bulunamadı. -->
   <div
-    class="col-start-3 col-end-11 min-h-[calc(100vh-14rem)] flex flex-col items-center gap-3"
+    class="max-2xl:col-start-1 max-2xl:col-end-13 2xl:col-start-3 2xl:col-end-11 min-h-[calc(100vh-14rem)] flex flex-col items-center gap-3"
     *ngIf="cart.totalItemCount <= 0">
     <div class="mt-5">
       <div class="inline-block relative">

@@ -39,6 +39,8 @@ import { NotificationTickDirective } from './shared/directives/notification-tick
 import { ShopPageComponent } from './pages/shop-page/shop-page.component';
 import { ProductDetailPageComponent } from './pages/product-detail-page/product-detail-page.component';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
+import { DrawerComponent } from './shared/components/drawer/drawer.component';
+import { BackToTopDirective } from './shared/directives/back-to-top.directive';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { CartPageComponent } from './pages/cart-page/cart-page.component';
     NotificationTickDirective,
     ShopPageComponent,
     ProductDetailPageComponent,
-    CartPageComponent
+    CartPageComponent,
+    DrawerComponent,
+    BackToTopDirective
   ],
   imports: [
     BrowserModule,

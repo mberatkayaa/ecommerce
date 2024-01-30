@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Category } from "../shared/models/Category.model";
 import { GroupService } from "../shared/services/group.service";
 import { Subscription } from "rxjs";
+import { IconsService } from "../shared/services/icons.service";
 
 @Component({
   selector: "app-navbar",
@@ -13,7 +14,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   groups: Array<{ name: string; value: string; categories: Array<Category> }> = [];
 
-  constructor(private groupService: GroupService) {}
+  constructor(private groupService: GroupService, protected iconsService: IconsService) {}
 
   ngOnInit(): void {
     this.groupService.refreshGroups().subscribe();

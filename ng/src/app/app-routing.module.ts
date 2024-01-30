@@ -35,6 +35,7 @@ const routes: Routes = [
     component: CartPageComponent,
     resolve: { cart: cartResolver },
   },
+  { path: "admin", redirectTo: "admin/products", pathMatch: "full" },
   {
     path: "admin",
     canActivate: [adminGuard],
@@ -49,7 +50,6 @@ const routes: Routes = [
         resolve: { product: productResolver },
       },
       { path: "categories", component: AdminCategoriesPageComponent },
-      { path: "**", component: AdminPageComponent },
     ],
   },
   { path: "**", component: HomePageComponent },

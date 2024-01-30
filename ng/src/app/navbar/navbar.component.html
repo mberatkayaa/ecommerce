@@ -1,6 +1,8 @@
-<nav class="navbar bg-primary text-primary-content p-0 items-stretch h-[5rem] relative">
+<!-- Navbar, lg+ -->
+<nav class="max-lg:hidden navbar bg-primary text-primary-content p-0 items-stretch h-[5rem] relative">
   <div class="grid grid-cols-12 w-full items-stretch">
-    <ul class="col-start-3 col-end-11 menu menu-horizontal gap-x-2 p-0 justify-between">
+    <ul
+      class="lg:col-start-1 lg:col-end-13 xl:col-start-2 xl:col-end-12 2xl:col-start-3 2xl:col-end-11 menu menu-horizontal flex-nowrap gap-x-2 p-0 justify-between">
       <li class="b-menu-item-container">
         <a routerLink="/shop" routerLinkActive="active" class="b-menu-link">Tümü</a>
       </li>
@@ -23,9 +25,7 @@
           </a>
           <ul class="b-menu-dropdown" [attr.data-dropdown]="'true'" *ngIf="grp.categories && grp.categories.length > 0">
             <li *ngFor="let cat of grp.categories">
-              <a class="b-menu-sub-item" [routerLink]="'/cat/' + cat.slug">
-                {{ cat.title }}
-              </a>
+              <a class="b-menu-sub-item" [routerLink]="'/cat/' + cat.slug">{{ cat.title }}</a>
             </li>
           </ul>
         </li>
@@ -33,3 +33,63 @@
     </ul>
   </div>
 </nav>
+<!-- Navbar(Drawer). max-lg -->
+<div class="lg:hidden drawer absolute top-3">
+  <input id="navbarDrawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <label for="navbarDrawer" class="absolute top-0 left-8">
+      <fa-icon
+        class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
+        [icon]="iconsService.bars" />
+    </label>
+  </div>
+  <div class="drawer-side z-30">
+    <label for="navbarDrawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+      <li>
+        <a routerLink="/shop" class="">
+          <span class="line-clamp-1 border-primary transition-all group-hover:border-l-4 group-hover:pl-2">Tümü</span>
+        </a>
+        <hr class="pointer-events-none py-0 my-2" />
+      </li>
+      <li *ngFor="let grp of groups">
+        <ng-container *ngIf="!grp.categories || grp.categories.length <= 0">
+          <label class="flex gap-2 cursor-pointer group">
+            <a [routerLink]="'/grp/' + grp.value" class="">
+              <span class="line-clamp-1 border-primary transition-all group-hover:border-l-4 group-hover:pl-2">
+                {{ grp.name }}
+              </span>
+            </a>
+          </label>
+          <hr class="pointer-events-none py-0 my-2" />
+        </ng-container>
+        <ng-container *ngIf="grp.categories && grp.categories.length > 0">
+          <details>
+            <summary>
+              <label class="flex gap-2 cursor-pointer group">
+                <a [routerLink]="'/grp/' + grp.value" class="">
+                  <span class="line-clamp-1 border-primary transition-all group-hover:border-l-4 group-hover:pl-2">
+                    {{ grp.name }}
+                  </span>
+                </a>
+              </label>
+            </summary>
+            <ul class="">
+              <li *ngFor="let cat of grp.categories">
+                <label class="flex gap-2 cursor-pointer group">
+                  <a [routerLink]="'/cat/' + cat.slug" class="">
+                    <span class="line-clamp-1 border-primary transition-all group-hover:border-l-4 group-hover:pl-2">
+                      {{ cat.title }}
+                    </span>
+                  </a>
+                </label>
+              </li>
+            </ul>
+          </details>
+          <hr class="pointer-events-none py-0 my-2" />
+        </ng-container>
+      </li>
+    </ul>
+      
+  </div>
+</div>

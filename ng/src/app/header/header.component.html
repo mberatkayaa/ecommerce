@@ -1,20 +1,28 @@
-<header class="grid grid-cols-12 py-12 h-36">
-  <div class="col-start-2 col-span-2">
+<header class="max-lg:gap-y-3 max-lg:py-3 2xl:h-36 grid grid-cols-12 py-12">
+  <!-- Logo -->
+  <div
+    class="max-lg:col-start-5 max-lg:col-span-4 max-lg:flex max-lg:justify-center lg:col-start-1 lg:col-span-2 xl:col-start-1 xl:col-span-2 2xl:col-start-2 2xl:col-span-2 border border-primary">
     <a
-      routerLink="/products/edit/65b545d5b5631329e21f99d4"
-      class="btn btn-ghost text-primary m-0 h-auto text-3xl font-bold rounded-none">
+      routerLink="/"
+      class="max-lg:text-lg max-lg:p-0 lg:text-xl xl:text-2xl 2xl:text-3xl btn btn-ghost text-primary m-0 h-auto font-bold rounded-none">
       <fa-icon [icon]="iconsService.store" />
       TakeStore
     </a>
   </div>
-  <div class="col-start-5 col-span-4 flex">
-    <input
-      type="text"
-      placeholder="Arama"
-      class="input focus:outline-0 focus:border-primary border-base-200 rounded-none flex-1" />
-    <button class="btn btn-primary rounded-none px-8">Ara</button>
+  <!-- Arama -->
+  <div class="max-lg:col-start-2 max-lg:col-span-10 lg:col-start-4 lg:col-end-9 xl:col-start-5 xl:col-span-4 2xl:col-start-5 2xl:col-span-3">
+    <div class="flex w-full">
+      <input
+        type="text"
+        placeholder="Arama"
+        class="max-lg:input-sm input focus:outline-0 focus:border-primary border-base-200 rounded-none flex-1" />
+      <button class="max-lg:btn-sm btn btn-primary rounded-none px-8 w-auto">Ara</button>
+    </div>
   </div>
-  <div class="col-start-10 col-span-2 flex gap-x-5">
+  <!-- Üye, Sepet, lg+ -->
+  <div
+    class="max-lg:hidden lg:col-start-9 lg:col-span-4 lg:px-4 xl:col-start-10 xl:col-span-3 xl:px-4 2xl:col-start-9 2xl:col-span-3 p-0 flex gap-x-5">
+    <!-- Üye -->
     <div class="flex group gap-x-2 ml-auto">
       <fa-icon
         class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
@@ -37,7 +45,9 @@
         </a>
       </div>
     </div>
+    <!-- Sepet -->
     <div class="relative group">
+      <!-- Sepet linki -->
       <a routerLink="/cart" class="flex group gap-x-2">
         <div class="indicator">
           <span class="indicator-item badge badge-primary w-6 h-6 text-xs right-2" *ngIf="cart.totalItemCount > 0">
@@ -50,10 +60,11 @@
         <div class="text-base-content group-hover:text-primary flex flex-col">
           <span class="font-semibold opacity-75 group-hover:opacity-100 text-sm truncate min-w-0 flex-1">SEPETİM</span>
           <span class="mt-auto mb-2 font-normal opacity-75 group-hover:opacity-100 text-xs">
-            {{ cart.totalItemCount > 0 ? "₺" + cart.totalPrice.toFixed(2)  : "Sepet boş" }}
+            {{ cart.totalItemCount > 0 ? "₺" + cart.totalPrice.toFixed(2) : "Sepet boş" }}
           </span>
         </div>
       </a>
+      <!-- Sepet hızlı gözat -->
       <div
         class="bg-base-100 shadow-md rounded-md w-96 absolute hidden group-hover:flex top-full right-0 p-3 z-40"
         *ngIf="cart.totalItemCount > 0">
@@ -63,6 +74,65 @@
             <a [routerLink]="'/prod/' + item.product.slug" class="truncate text-sm">{{ item.product.title }}</a>
             <span class="text-nowrap ml-auto font-semibold">x{{ item.quantity }}</span>
             <button class="btn btn-error btn-sm" (click)="removeCartItem(i)">Kaldır</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Üye, Sepet, max-lg -->
+  <div class="lg:hidden col-start-10 col-span-2 row-start-1 ml-auto">
+    <div class="drawer drawer-end">
+      <input id="drawer-left" type="checkbox" class="drawer-toggle" />
+      <div class="drawer-content">
+        <label for="drawer-left">
+          <fa-icon
+            class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
+            [icon]="iconsService.user" />
+        </label>
+      </div>
+      <div class="drawer-side z-30 overflow-x-hidden">
+        <label for="drawer-left" aria-label="close sidebar" class="drawer-overlay"></label>
+        <div class="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-4">
+          <!-- Üye, user !== null-->
+          <div class="flex flex-wrap items-center" *ngIf="user">
+            <fa-icon
+              class="text-primary text-xl border border-base-200 group-hover:border-primary rounded-full w-12 h-12 flex items-center justify-center"
+              [icon]="iconsService.user" />
+            <span class="font-bold">{{ user.email }}</span>
+            <button class="btn btn-primary btn-sm rounded basis-full" (click)="signOutHandler($event)">
+              Çıkış Yap
+            </button>
+          </div>
+          <!-- Üye, user === null -->
+          <ul *ngIf="!user">
+            <li><a class="btn btn-primary btn-sm rounded" routerLink="/signup">Üye Ol</a></li>
+            <li><a class="btn btn-primary btn-sm rounded mt-2" routerLink="/signin">Giriş Yap</a></li>
+          </ul>
+          <!-- Sepet -->
+          <div class="group flex flex-col w-full" *ngIf="user">
+            <!-- Sepet linki -->
+            <a routerLink="/cart" class="group gap-x-2 items-center btn btn-primary btn-md rounded">
+              <div class="indicator">
+                <fa-icon class="text-xl" [icon]="iconsService.cartShopping" />
+              </div>
+              <span class="font-semibold text-sm">Sepet</span>
+            </a>
+            <!-- Sepet - ürün sayısı ve fiyat -->
+            <div class="flex justify-between font-semibold">
+              <span>Ürünler: x{{ cart.totalItemCount }}</span>
+              <span>₺{{ cart.totalPrice.toFixed(2) }}</span>
+            </div>
+            <!-- Sepet hızlı gözat -->
+            <div class="bg-base-100 shadow-md rounded-md flex mt-3 p-3 z-40" *ngIf="cart.totalItemCount > 0">
+              <div class="max-h-60 flex flex-col gap-4 overflow-auto">
+                <div class="gap-3 items-center flex shadow p-2" *ngFor="let item of cart.items; let i = index">
+                  <img class="max-w-16 max-h-16 object-cover" [src]="item.product.mainImg" />
+                  <a [routerLink]="'/prod/' + item.product.slug" class="truncate text-sm">{{ item.product.title }}</a>
+                  <span class="text-nowrap ml-auto font-semibold">x{{ item.quantity }}</span>
+                  <button class="btn btn-error btn-sm" (click)="removeCartItem(i)">Kaldır</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

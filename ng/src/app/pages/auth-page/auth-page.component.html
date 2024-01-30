@@ -1,5 +1,5 @@
 <form
-  class="flex flex-col gap-6 w-96 mx-auto shadow-lg border rounded px-8 py-4 mt-12"
+  class="flex flex-col gap-6 w-96 mx-auto shadow border rounded px-8 py-4 mt-12"
   [ngClass]="{ 'shadow-primary': authForm.valid, 'shadow-error': authForm.invalid }"
   [formGroup]="authForm"
   (ngSubmit)="submitHandler()">

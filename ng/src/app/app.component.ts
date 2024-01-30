@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private notificationHandler: NotificationHandlerService,
-    private cd: ChangeDetectorRef,
+    private cd: ChangeDetectorRef
   ) {}
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -37,8 +37,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.checkStoredToken();
 
-    
-
     this.subscription = this.notificationHandler.notifications.subscribe({
       next: (value) => {
         this.sideNotifications = value.filter((x) => x.position === "side").reverse();
@@ -46,5 +44,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.cd.detectChanges();
       },
     });
+  }
+
+  toTopHandler() {
+    window.scrollTo(0, 0);
   }
 }
