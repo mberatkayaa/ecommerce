@@ -9,8 +9,24 @@ import { CartService } from "../../services/cart.service";
   styleUrl: "./product-card.component.css",
 })
 export class ProductCardComponent {
+  private timeoutId;
   @Input() product: Product;
+  @Input() dragging: boolean;
+  set q(value) {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
+    if (value) {
+      this._stopLink = value;
+    } else {
+      this.timeoutId = setTimeout(() => {
+        this._stopLink = false;
+      }, 500);
+    }
+  }
 
+  _stopLink: boolean = false;
   constructor(protected iconsService: IconsService, private cartService: CartService) {}
 
   addToCartHandler(event: Event) {

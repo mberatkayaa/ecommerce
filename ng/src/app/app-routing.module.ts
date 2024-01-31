@@ -13,11 +13,13 @@ import { ShopPageComponent } from "./pages/shop-page/shop-page.component";
 import { ProductDetailPageComponent } from "./pages/product-detail-page/product-detail-page.component";
 import { CartPageComponent } from "./pages/cart-page/cart-page.component";
 import { cartResolver } from "./shared/resolvers/cart.resolver";
+import { carouselProductsResolver } from "./shared/resolvers/carousel-products.resolver";
 
 const routes: Routes = [
   {
     path: "",
     component: HomePageComponent,
+    resolve: { products: carouselProductsResolver },
   },
   { path: "signup", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signup" } },
   { path: "signin", canActivate: [authGuard], component: AuthPageComponent, data: { mode: "signin" } },

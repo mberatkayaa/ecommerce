@@ -1,5 +1,5 @@
-<div class="grid grid-cols-12">
-  <div class="col-start-3 col-end-11">
+<div class="grid grid-cols-12 mt-5">
+  <div class="max-xl:col-start-1 max-xl:col-end-13  xl:col-start-2 xl:col-end-12 2xl:col-start-3 2xl:col-end-11">
     <owl-carousel-o class="main-carousel" [options]="customOptions" *appCarouselFixer>
       <ng-template carouselSlide [id]="'main-carousel__slide-1'">
         <img class="w-full" src="../../../assets/wild-serisi-oyuncu-mouse-pad-acf8(1).jpg" />
@@ -13,12 +13,10 @@
     </owl-carousel-o>
   </div>
 
-  <h1 class="col-start-3 col-end-11 text-2xl text-center font-bold">Öne Çıkanlar</h1>
+  <h1 class="max-xl:col-start-1 max-xl:col-end-13  xl:col-start-2 xl:col-end-12 2xl:col-start-3 2xl:col-end-11 text-2xl text-center font-bold my-5">Öne Çıkanlar</h1>
   
-  <app-product-carousel class="main-carousel col-start-3 col-end-11" [products]="prods" [itemCount]="5"/>
+  <app-product-carousel class="main-carousel max-xl:col-start-1 max-xl:col-end-13  xl:col-start-2 xl:col-end-12 2xl:col-start-3 2xl:col-end-11" [products]="products" [itemCount]="5"/>
+
+  <h1 class="max-xl:col-start-1 max-xl:col-end-13  xl:col-start-2 xl:col-end-12 2xl:col-start-3 2xl:col-end-11 text-2xl text-center font-bold my-5">Sizin için seçtiklerimiz</h1>
+  <app-product-carousel class="main-carousel max-xl:col-start-1 max-xl:col-end-13  xl:col-start-2 xl:col-end-12 2xl:col-start-3 2xl:col-end-11" [products]="products2" [itemCount]="5"/>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
