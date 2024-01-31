@@ -77,11 +77,9 @@ export class ProductCarouselComponent {
     }
     if (value) {
       this.isDragging = value;
-      console.log("DRAGGING: ", this.isDragging);
     } else {
       this.timeoutId = setTimeout(() => {
         this.isDragging = false;
-        console.log("DRAGGING: ", this.isDragging);
       }, 500);
     }
   }

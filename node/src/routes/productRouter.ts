@@ -84,12 +84,6 @@ productRouter.get("/", (req, res) => {
       } else if (grps && grps.length > 0) {
         query.groups = { $in: grps };
       }
-      // else if(grpLimit && grpLimit.length > 0){
-      //   query.groups = { $in: grpLimit };
-      //   if(allowedCats && allowedCats.length > 0){
-      //     query.$or = [{ groups: { $in: grpLimit } }, { categories: { $in: allowedCats } }];
-      //   }
-      // }
     }
 
     if (inStock) query.stock = { $gt: 0 };

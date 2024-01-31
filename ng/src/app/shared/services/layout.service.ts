@@ -35,9 +35,7 @@ export class LayoutService {
   constructor(private router: Router) {
     this.router.events.subscribe({
       next: (value) => {
-        console.log("route event: ", value);
         if (value instanceof NavigationEnd) {
-          console.log("URL in event: ", value.url);
           const visibility = this.findVisibility(this.infos, value.url);
           this.visibility.next(visibility);
         }

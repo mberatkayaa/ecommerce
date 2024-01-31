@@ -69,15 +69,7 @@ adminProductRouter.post("/add", productImageHandler(), (req, res) => {
     if (categories.length > 0) {
       await categoryModel.updateMany({ _id: { $in: categories } }, { $push: { products: savedProduct._id } });
     }
-    //#region Category'lere Product'ı ekle.
-    // categories.forEach(async (id) => {
-    //   const catResult = await categoryModel.findByIdAndUpdate(
-    //     id,
-    //     { $push: { products: savedProduct._id } },
-    //     { new: true }
-    //   );
-    //   const catObj = catResult?.toObject();
-    // });
+    
     res.status(200).json(new ResultBuilder().ok().body(productObj).result);
     //#endregion
   }, res);

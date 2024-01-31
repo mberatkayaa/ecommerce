@@ -7,9 +7,6 @@ import Swal from "sweetalert2";
 export const adminGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const authService = inject(AuthService);
   if (authService.user.value === null) {
-    // alert("Bu sayfaya giriş için oturum açınız!");
-    // const email = prompt("Email: ");
-    // const password = prompt("Parola: ");
     let emailInput: HTMLInputElement;
     let passwordInput: HTMLInputElement;
 

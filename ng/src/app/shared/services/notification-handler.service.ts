@@ -18,7 +18,7 @@ export class NotificationHandlerService {
     this.router.events.subscribe({
       next: (value) => {
         if (value instanceof NavigationError) {
-          console.log("error: ", value);
+          console.log("Error caught in URL: ", value.url);
           const message: string = value.error.result.message;
           this.addNotification({ title: "Hata", description: message, type: "error" });
           this.redirect();

@@ -29,15 +29,15 @@ app-root {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-secondary rounded-sm;
+  @apply bg-base-300 rounded-sm;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-accent/75 rounded-sm;
+  @apply bg-base-content/75 rounded-sm;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent;
+  @apply bg-base-content;
 }
 
 .children-h-100 > * {

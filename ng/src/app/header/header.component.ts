@@ -34,7 +34,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.cartSubscription = this.cartService.cart.subscribe({
       next: (cart: Cart) => {
         this.cart = cart;
-        console.log(cart);
       },
     });
   }

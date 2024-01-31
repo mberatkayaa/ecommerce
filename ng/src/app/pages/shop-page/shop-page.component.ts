@@ -18,21 +18,7 @@ import { QueryParams } from "../../shared/misc/QueryParams";
 export class ShopPageComponent implements OnInit, OnDestroy {
   private groupServiceSubscription: Subscription;
   private queryParamsSubscription: Subscription;
-
-  // @Input("groups")
-  // set groupsInput(
-  //   value: Array<{
-  //     name: string;
-  //     value: string;
-  //     checked: boolean;
-  //     categories: Array<{ category: Category; checked: boolean }>;
-  //   }>
-  // ) {
-  //   this.groups = value || [];
-  //   // this.setCheckBoxes();
-  //   // this.getProducts();
-  // }
-
+  
   categorySlug: string = null;
   groupSlug: string = null;
 
@@ -136,7 +122,6 @@ export class ShopPageComponent implements OnInit, OnDestroy {
                   wide: string;
                   cold: string;
                 }) => {
-                  console.log("query", value);
                   this.queryParams.obj.page = +value.page || 1;
                   this.queryParams.obj.inStock = value.inStock === "true";
                   this.queryParams.obj.sort = value.sort;
@@ -226,7 +211,6 @@ export class ShopPageComponent implements OnInit, OnDestroy {
   }
 
   grpCheckedChanged(id, noQuery: boolean = false, value: boolean = false) {
-    console.log("grp combo: ", id);
     const obj = this.groups.find((x) => x.value === id);
     if (obj) {
       obj.checked = noQuery ? value : !obj.checked;
@@ -241,7 +225,6 @@ export class ShopPageComponent implements OnInit, OnDestroy {
   }
 
   catCheckedChanged(id, noQuery: boolean = false, value: boolean = false) {
-    console.log("cat combo: ", id);
     for (let i = 0; i < this.groups.length; i++) {
       const grp = this.groups[i];
       if (grp.categories && grp.categories.length > 0) {

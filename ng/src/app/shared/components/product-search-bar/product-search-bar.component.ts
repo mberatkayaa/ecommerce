@@ -26,7 +26,6 @@ export class ProductSearchBarComponent {
 
   inputChangedHandler(value) {
     this.clear();
-    console.log(value);
     if (this.iChangeValue) return;
     this.inputValue = value;
     this.timeoutId = setTimeout(() => {
@@ -83,7 +82,6 @@ export class ProductSearchBarComponent {
 
   blurHandler() {
     this.expand = false;
-    console.log("BLUR");
     this.inputEl.nativeElement.value = this.inputValue;
   }
 

@@ -61,7 +61,6 @@ export class AdminProductsPageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe({
       next: (value: { page: string; limit: string; inStock: string; sort: string; wide: string; cold: string }) => {
-        console.log("query", value);
         this.queryParams.obj.page = +value.page || 1;
         this.queryParams.obj.inStock = value.inStock === "true";
         this.queryParams.obj.sort = value.sort;
@@ -106,18 +105,6 @@ export class AdminProductsPageComponent implements OnInit {
             });
           },
         });
-        //   this.http
-        //     .get<PaginatedHttpResult<Product>>(domain + "products", {
-        //       params: this.queryParams.httpParams(),
-        //     })
-        //     .subscribe({
-        //       next: (result) => {
-        //         this.totalPages = result.body.totalPages;
-        //         this.products = result.body.docs;
-        //         this.totalDocs = result.body.totalDocs;
-        //         this.setPageButtons();
-        //       },
-        //     });
       },
     });
   }

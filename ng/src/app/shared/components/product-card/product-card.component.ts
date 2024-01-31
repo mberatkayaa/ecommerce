@@ -32,7 +32,6 @@ export class ProductCardComponent {
   addToCartHandler(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log("cart", event);
     this.cartService.toCart(this.product, 1).subscribe();
   }
 

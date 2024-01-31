@@ -8,14 +8,6 @@ const initialValue: HttpResult<any> = {
   source: "dedicatedServer",
 };
 
-// export interface Result {
-//   ok: boolean;
-//   error: boolean;
-//   message: string;
-//   body: { [key: string]: any };
-//   source: string;
-// }
-
 export class ResultBuilder<T> {
   private _obj: HttpResult<T> = { ...initialValue };
 

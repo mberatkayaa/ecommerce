@@ -80,7 +80,7 @@
 <div class="grid grid-cols-12 h-auto">
   <!-- Kategoriler, lg+ -->
   <div
-    class="max-lg:hidden lg:col-span-3 xl:col-span-2 2xl:col-span-2 border border-black max-h-[calc(100vh-14rem)] sticky top-0 p-2"
+    class="max-lg:hidden lg:col-span-3 xl:col-span-2 2xl:col-span-2 max-h-[calc(100vh-14rem)] sticky top-0 p-2"
     *ngIf="
       groups &&
       (groups.length > 1 || (groups.length > 0 && groups[0].categories && groups[0].categories.length > 1)) &&
@@ -143,7 +143,7 @@
         </a>
       </div>
     </div>
-    <div class="border border-cyan-600">
+    <div class="">
       <app-products [products]="products" [isAdmin]="false" [wide]="queryParams.obj.wide" />
     </div>
     <div class="mt-auto flex" *ngIf="products && products.length > 0">

@@ -59,7 +59,6 @@ export class AuthService {
   private signedInHandler(token: string) {
     localStorage.setItem("token", token);
     const decoded = jwtDecode<{ email: string; exp: number; iat: number; _id: string }>(token);
-    console.log("decoded", decoded);
 
     const expiration = decoded.exp * 1000 - new Date().getTime();
     if (expiration <= 0) {

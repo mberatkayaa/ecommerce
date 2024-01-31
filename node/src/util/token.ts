@@ -17,7 +17,7 @@ export function getToken(email: string, _id: string) {
 export function decodeToken(token: string) {
   let decoded: jwtPayload | null;
   decoded = jwt.decode(token) as jwtPayload;
-  console.log(decoded);
+  console.log("decoded token: ",decoded);
   if (decoded && decoded.exp) {
     const expiration = decoded.exp * 1000 - new Date().getTime();
     if (expiration <= 0) {
@@ -33,7 +33,7 @@ export function verifyToken(token: string) {
     const verifyResult = jwt.verify(token, process.env.AUTH_SECRET!);
     if (verifyResult) result = true;
   } catch (err) {
-    console.log(err);
+    console.error("veriyToken Error:", err);
   }
   return result;
 }

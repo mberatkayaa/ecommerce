@@ -22,17 +22,12 @@ export class CarouselFixer2Directive implements AfterViewInit {
     }, 200);
   }
 
-  // @HostListener("document:DOMContentLoaded", ["$event"])
-  // domLoaded() {
-  //   this.resizeHandler();
-  // }
+ 
 
   constructor(private elementRef: ElementRef, private carousel: CarouselComponent) {}
 
   ngAfterViewInit(): void {
-    // new ResizeObserver(() => {
-    //   this.resizeHandler();
-    // }).observe(this.elementRef.nativeElement);
+    
   }
 
   refresh() {
