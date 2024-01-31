@@ -45,7 +45,7 @@ app.use("/", async (req, res, next) => {
           .findOne({ email: decoded.email, _id: decoded._id })
           .populate("cart.product")
           .exec();
-          
+
         req.body.__ext.auth.user = user;
       }
     }
@@ -124,7 +124,7 @@ app.post("/signup", (req, res) => {
 });
 
 mongoose
-  .connect(process.env.MONGO_CONN_STR!)
+  .connect(process.env.MONGO_CONN_STR!, { autoIndex: true })
   .then(() => {
     app.listen(3000, () => {
       console.log("server running");

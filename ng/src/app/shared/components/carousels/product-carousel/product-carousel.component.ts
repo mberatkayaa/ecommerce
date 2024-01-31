@@ -32,7 +32,7 @@ export class ProductCarouselComponent {
   }
 
   private setOptions() {
-    const itemCount = Math.max(1, Math.min(this.itemCount, this.products.length - 1));
+    const itemCount = Math.max(1, Math.min(this.itemCount, this.products.length));
     this._options = {
       loop: true,
       // center: itemCount % 2 === 1,

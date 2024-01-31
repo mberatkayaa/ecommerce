@@ -109,6 +109,15 @@ productRouter.get("/", (req, res) => {
       default:
         break;
     }
+    if (req.query.search) {
+      const search: string = <string>req.query.search;
+      if (search.length > 0)
+        query.$text = {
+          $search: search.includes(" ") ? '"' + search + '"' : search,
+          $caseSensitive: false,
+        };
+    }
+
     const prods = await productModel.paginate(query, {
       page,
       limit,
@@ -123,5 +132,17 @@ productRouter.get("/", (req, res) => {
       }));
     }
     res.status(200).json(new ResultBuilder().ok().body(prods).result);
+  }, res);
+});
+
+productRouter.get("/search/:text", (req, res) => {
+  wrapper(async () => {
+    const result = await productModel.find({
+      $text: {
+        $search: req.params.text.includes(" ") ? '"' + req.params.text + '"' : req.params.text,
+        $caseSensitive: false,
+      },
+    });
+    return res.status(200).json(new ResultBuilder().ok().body(result).result);
   }, res);
 });

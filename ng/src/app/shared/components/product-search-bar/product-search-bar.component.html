@@ -1,0 +1,30 @@
+<div class="relative" (focusout)="blurHandler()">
+  <div class="flex">
+    <input
+    #searchInput
+    formControlName="search"
+    type="text"
+    placeholder="Arama"
+    (input)="inputChangedHandler($event.target.value)"
+    (keydown)="keydownHandler($event)"
+    (focus)="focusHandler()"
+    class="max-lg:input-sm input focus:outline-0 focus:border-primary rounded-none flex-1 border-2 border-cyan-700" />
+    <button (click)="activatedHandler(-1)" class="max-lg:btn-sm btn btn-primary rounded-none px-8 w-auto">Ara</button>
+  </div>
+  <div
+    class="box-content max-h-80 shadow bg-base-100 absolute overflow-auto w-full z-10"
+    (mouseleave)="selectedHandler(-1)"
+    *ngIf="expand">
+    <div
+      *ngFor="let prod of products; let i = index"
+      (mouseenter)="selectedHandler(i)"
+      (click)="activatedHandler(i)"
+      [autofocus]="selectedIndex === i"
+      [ngClass]="{ 'bg-primary text-bg-primary': selectedIndex === i }">
+      <div class="gap-3 items-center flex shadow px-2">
+        <img class="w-8 h-8 object-contain" [src]="prod.mainImg" />
+        <span class="truncate text-sm">{{ prod.title }}</span>
+      </div>
+    </div>
+  </div>
+</div>

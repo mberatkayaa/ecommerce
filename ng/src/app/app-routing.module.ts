@@ -14,6 +14,7 @@ import { ProductDetailPageComponent } from "./pages/product-detail-page/product-
 import { CartPageComponent } from "./pages/cart-page/cart-page.component";
 import { cartResolver } from "./shared/resolvers/cart.resolver";
 import { carouselProductsResolver } from "./shared/resolvers/carousel-products.resolver";
+import { ProductSearchBarComponent } from "./shared/components/product-search-bar/product-search-bar.component";
 
 const routes: Routes = [
   {
@@ -54,7 +55,7 @@ const routes: Routes = [
       { path: "categories", component: AdminCategoriesPageComponent },
     ],
   },
-  { path: "**", component: HomePageComponent },
+  { path: "**", component: ProductSearchBarComponent },
 ];
 
 @NgModule({

@@ -94,6 +94,10 @@
   <!-- Ürünler -->
   <div
     class="max-lg:col-start-1 max-lg:col-span-12 lg:col-start-4 lg:col-end-13 xl:col-start-3 xl:col-end-13 2xl:col-start-3 2xl:col-end-12 min-h-[calc(100vh-14rem)] flex flex-col">
+    <span *ngIf="queryParams.obj.search" class="mx-4 text-sm  mt-3">
+      <span class="font-bold">"{{ queryParams.obj.search }}"</span>
+      aramasına ilişkin sonuçlar:
+    </span>
     <!-- Seçenekler, max-lg -->
     <app-drawer drawerName="filterDrawer" class="lg:hidden w-full">
       <div role="button" class="btn btn-primary btn-sm rounded w-full" drawerButton>

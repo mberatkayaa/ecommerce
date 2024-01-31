@@ -41,6 +41,8 @@ import { ProductDetailPageComponent } from './pages/product-detail-page/product-
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { DrawerComponent } from './shared/components/drawer/drawer.component';
 import { BackToTopDirective } from './shared/directives/back-to-top.directive';
+import { ProductSearchBarComponent } from './shared/components/product-search-bar/product-search-bar.component';
+import { FocusDirective } from './shared/directives/focus.directive';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { BackToTopDirective } from './shared/directives/back-to-top.directive';
     ProductDetailPageComponent,
     CartPageComponent,
     DrawerComponent,
-    BackToTopDirective
+    BackToTopDirective,
+    ProductSearchBarComponent,
+    FocusDirective
   ],
   imports: [
     BrowserModule,

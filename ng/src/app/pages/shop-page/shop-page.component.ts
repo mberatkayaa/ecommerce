@@ -51,6 +51,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
     sort: string;
     grps: string;
     cats: string;
+    search: string;
     wide: boolean;
   }> = new QueryParams({
     page: 1,
@@ -59,6 +60,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
     sort: null,
     grps: null,
     cats: null,
+    search: null,
     wide: false,
   });
 
@@ -130,6 +132,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
                   sort: string;
                   grps: string;
                   cats: string;
+                  search: string;
                   wide: string;
                   cold: string;
                 }) => {
@@ -140,6 +143,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
                   this.queryParams.obj.wide = value.wide === "true";
                   this.queryParams.obj.grps = value.grps || null;
                   this.queryParams.obj.cats = value.cats || null;
+                  this.queryParams.obj.search = value.search || null;
 
                   if (this.categorySlug) {
                     this.queryParams.obj.grps = null;
